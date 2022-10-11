@@ -1,0 +1,23 @@
+{
+  "title": "OpenFeature Demo",
+  "description": "Demonstrates OpenFeature",
+  "details": {
+    "intro": {
+      "title": "Welcome to OpenFeature",
+      "text": "intro.md",
+      "foreground": "assets/scripts/foreground.sh"
+    },
+    "steps": [
+      {
+        "title": "Step 1",
+        "text": "step1.md"
+      }
+    ],
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "backend": {
+    "imageid": "ubuntu"
+  }
+}
