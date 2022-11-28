@@ -1,0 +1,35 @@
+{
+
+	"title": "OpenFeature Kubernetes Operator Demo",
+	"description": "Tutorial for OpenFeature k8s Operator using FlagD",
+	"difficulty": "Medium",
+	"time": "10",
+	"details": {
+		"steps": [{
+            "title": "OpenFeature Operator",
+            "text": "step1.md"
+        }],
+		"intro": {
+			"text": "intro.md",
+            "foreground": "assets/scripts/intro_foreground.sh"
+		},
+		"finish": {
+			"text": "finish.md"
+		},
+        "assets": {
+            "host01": [{
+                "file": "end-to-end.yaml",
+                "chmod": "+x",
+                "target": "~"
+            }]
+        }
+	},
+	"environment": {
+		"showdashboard": true,
+		"dashboard": "Dashboard",
+		"uilayout": "terminal"
+	},
+	"backend": {
+		"imageid": "kubernetes-kubeadm-1node"
+	}
+}
