@@ -5,16 +5,19 @@
     "intro": {
       "title": "Welcome to OpenFeature",
       "text": "intro.md",
-      "foreground": "assets/scripts/foreground.sh"
+      "foreground": "assets/scripts/foreground.sh",
+      "background": "assets/scripts/intro_background.sh"
     },
     "steps": [
       {
         "title": "Step 1",
-        "text": "step1.md"
+        "text": "step1.md",
+        "background": "assets/scripts/step1_background.sh"
       }
     ],
     "finish": {
-      "text": "finish.md"
+      "text": "finish.md",
+      "background": "assets/scripts/finish_background.sh"
     }
   },
   "backend": {
