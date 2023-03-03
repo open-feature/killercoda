@@ -1,0 +1,41 @@
+{
+
+	"title": "OpenFeature flagd Demo",
+	"description": "Work in progress. Expect to be broken.",
+	"details": {
+		"steps": [{
+            "title": "Initial Setup and Configuration",
+            "text": "step1.md"
+        }, {
+			"title": "flagd",
+			"text": "step2.md"
+		}, {
+			"title": "Flag Evaluation and GitOps Changes",
+			"text": "step3.md"
+		}, {
+			"title": "Targeting Rules",
+			"text": "step4.md"
+		}, {
+			"title": "Fractional Evaluations",
+			"text": "step5.md"
+		}, {
+			"title": "Next and TODO",
+			"text": "step6.md"
+		}],
+		"intro": {
+			"text": "intro.md",
+            "foreground": "assets/scripts/intro_foreground.sh"
+		},
+		"finish": {
+			"text": "finish.md"
+		}
+	},
+	"environment": {
+		"showdashboard": true,
+		"dashboard": "Dashboard",
+		"uilayout": "terminal"
+	},
+	"backend": {
+		"imageid": "ubuntu"
+	}
+}
