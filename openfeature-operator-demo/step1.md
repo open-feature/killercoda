@@ -2,15 +2,6 @@
 
 [View the OpenFeature Demo Application]({{TRAFFIC_HOST1_30000}})
 
-## 502 Error?
-If you get a 502 error, the port-forwarding intermittently will not work during the killercoda startup script.
-
-Just run the port-forward again and refresh the application.
-
-```
-nohup kubectl -n open-feature-demo port-forward --address 0.0.0.0 service/open-feature-demo-service 30000 &
-```{{exec}}
-
 # View the Feature Flag Configuration
 
 The demo application pod is reading feature flag configurations from a CRD of type `FeatureFlagConfiguration`{{}} called `end-to-end`{{}}. The application uses this CRD to update the application configuration.
