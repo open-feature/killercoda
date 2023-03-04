@@ -1,22 +1,29 @@
-# Expose the application
-
-```
-kubectl -n open-feature-demo port-forward --address 0.0.0.0 service/open-feature-demo-service 30000
-```{{exec}}
-
 # Visit Application
 
 [View the OpenFeature Demo Application]({{TRAFFIC_HOST1_30000}})
 
+## 502 Error?
+If you get a 502 error, the port-forwarding intermittently will not work during the killercoda startup script.
+
+Just run the port-forward again and refresh the application.
+
+```
+nohup kubectl -n open-feature-demo port-forward --address 0.0.0.0 service/open-feature-demo-service 30000 &
+```{{exec}}
+
 # View the Feature Flag Configuration
 
-The demo application pod is reading feature flag configurations from a CRD called `FeatureFlagConfiguration`{{}}.
+The demo application pod is reading feature flag configurations from a CRD of type `FeatureFlagConfiguration`{{}} called `end-to-end`{{}}. The application uses this CRD to update the application configuration.
 
-Leave the port-forward running. Open new terminal window and display the `featureflagconfigurations`:
+Changing the CRD will automatically adjust the applications behaviour.
+
+Display the `featureflagconfigurations`{{}}:
 
 ```
 kubectl -n open-feature-demo get featureflagconfigurations
 ```{{exec}}
+
+For convenience, this is stored on disk at `~/feature-flag-configuration.yaml`{{}}.
 
 # Update Application Color Flag
 
@@ -24,19 +31,15 @@ Change the application color by updating the feature flag.
 
 The flag definition is already available as a YAML file.
 
-Modify line `28`{{}} of `~/end-to-end.yaml` file and re-apply it.
+Modify line `23`{{}} of `~/feature-flag-configuration.yaml` file and re-apply it.
 
-You can use the built-in editor or a text editor like nano:
-```
-nano ~/end-to-end.yaml
-```{{exec}}
+You can use the built-in editor or just click this the following code snippet.
 
-Change `defaultVariant: blue` to `defaultVariant: green`.
-
-Apply those changes:
+Change `defaultVariant: blue`{{}} to `defaultVariant: green`{{}} and apply the changes:
 
 ```
-kubectl apply -f ~/end-to-end.yaml
+sed -i 's/defaultVariant: blue/defaultVariant: green/g' ~/feature-flag-configuration.yaml
+kubectl apply -f ~/feature-flag-configuration.yaml
 ```{{exec}}
 
 # View Changes
