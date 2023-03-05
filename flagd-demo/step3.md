@@ -8,21 +8,21 @@ curl -X POST {{TRAFFIC_HOST1_8013}}/schema.v1.Service/ResolveString \
   -d '{"flagKey": "headerColor", "context": {} }'
 ```{{exec}}
 
-This should return `red` because the `defaultVariant` is set to `red` in Git ([see here]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/flags.json#L91)).
+This should return `red` because the `defaultVariant` is set to `red` in Git ([see here]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/example_flags.flagd.json#L95)).
 
 ## Change Flag Color
 
 Using GitOps, change the `defaultVariant` from `red` to `yellow`:
 
-Edit `~/template/flags.json`{{}} (or do it via the UI) then `git commit and git push`{{}}. Remember that the username and password is `openfeature` for both.
+Edit `~/flags/example_flags.flagd.json`{{}} (or do it via the UI) then `git commit and git push`{{}}. Remember that the username and password is `openfeature` for both.
 
 ```
-cd ~/template
-sed -i 's/"defaultVariant": "red"/"defaultVariant": "yellow"/g' ~/template/flags.json
-git add flags.json && git commit -m "update header color" && git push
+cd ~/flags
+sed -i 's/"defaultVariant": "red"/"defaultVariant": "yellow"/g' ~/flags/example_flags.flagd.json
+git add example_flags.flagd.json && git commit -m "update header color" && git push
 ```{{exec}}
 
-[Line 91]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/flags.json#L91) should now be `"defaultVariant": "yellow",`
+[Line 91]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/example_flags.flagd.json#L91) should now be `"defaultVariant": "yellow",`
 
 ## Retrieve the Flag Value Again
 

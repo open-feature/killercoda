@@ -43,7 +43,7 @@ adduser \
   git
 
 # Configure git for 'ubuntu' and 'git' users
-git config --system user.email "me@openfeature.dev"
+git config --system user.email "me@faas.com"
 git config --system user.name "OpenFeature"
 
 # Download 'gitea'
@@ -122,7 +122,7 @@ sudo -u git gitea migrate -c=/etc/gitea/app.ini
 sudo -u git gitea admin user create \
    --username=openfeature \
    --password=openfeature \
-   --email=me@openfeature.dev \
+   --email=me@faas.com \
    --must-change-password=false \
    -c=/etc/gitea/app.ini
 
@@ -144,9 +144,9 @@ tea login add \
 
 # Create an empty repo called 'flags'
 # Clone the template repo
-cd ~
 tea repo create --name=flags --init=false
-git clone https://github.com/agardnerIT/OpenFeatureFlagsTemplate
+git clone https://0.0.0.0:3000/flags
+wget -O ~/flags/example_flags.flagd.json https://github.com/open-feature/flagd/blob/main/config/samples/example_flags.flagd.json
 
 # ---------------------------------------------#
 #       🎉 Installation Complete 🎉           #

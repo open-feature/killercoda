@@ -11,5 +11,5 @@ Start flagd and ask it to read files from a JSON source hosted online:
 ```
 flagd start \
   --port 8013 \
-  --uri {{TRAFFIC_HOST1_3000}}/openfeature/flags/raw/branch/main/flags.json
+  --uri {{TRAFFIC_HOST1_3000}}/openfeature/flags/raw/branch/main/example_flags.flagd.json
 ```{{exec}}
