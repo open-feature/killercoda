@@ -23,7 +23,7 @@ spec:
         variants:
           red: c05543
           green: 2f5230
-          blue: 0000CC
+          blue: 0d507b
           yellow: yellow
         defaultVariant: blue
       fib-algo:
