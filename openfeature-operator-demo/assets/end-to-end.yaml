@@ -21,7 +21,7 @@ spec:
       hex-color:
         state: ENABLED
         variants:
-          red: CC0000
+          red: c05543
           green: 00CC00
           blue: 0000CC
           yellow: yellow
