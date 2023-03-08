@@ -1,0 +1,37 @@
+{
+    "title": "Five Minutes to Feature Flags",
+    "description": "Add feature flags to a NodeJS app with OpenFeature.",
+    "details": {
+      "intro": {
+        "title": "Feature Flagging in 5 Minutes",
+        "text": "intro.md",
+        "foreground": "assets/scripts/intro_foreground.sh"
+      },
+      "steps": [{
+            "title": "Hello, world",
+            "text": "step1.md"
+        }, {
+          "title": "Introducing OpenFeature",
+          "text": "step2.md"
+      }, {
+        "title": "Moving to a Full Feature Flagging System",
+        "text": "step3.md"
+    }],
+      "finish": {
+        "title": "Next Steps",
+        "text": "finish.md"
+      },
+      "assets": {
+        "host01": [
+            {"file": "01_vanilla.js", "target": "~/app" },
+            {"file": "02_basic_flags.js", "target": "~/app" },
+            {"file": "03_openfeature.js", "target": "~/app" },
+            {"file": "04_openfeature_with_provider.js", "target": "~/app" }
+         ]
+      }
+    },
+    "backend": {
+      "imageid": "ubuntu"
+    }
+}
+  
