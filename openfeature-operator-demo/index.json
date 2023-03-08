@@ -1,13 +1,16 @@
 {
 
-	"title": "OpenFeature Kubernetes Operator Demo",
-	"description": "Tutorial for OpenFeature k8s Operator using FlagD",
+	"title": "OpenFeature Operator",
+	"description": "Tutorial for OpenFeature k8s Operator",
 	"difficulty": "Medium",
 	"time": "10",
 	"details": {
 		"steps": [{
             "title": "OpenFeature Operator",
             "text": "step1.md"
+        }, {
+            "title": "OpenFeature Hooks",
+            "text": "step2.md"
         }],
 		"intro": {
 			"text": "intro.md",
@@ -19,6 +22,10 @@
         "assets": {
             "host01": [{
                 "file": "end-to-end.yaml",
+                "chmod": "+x",
+                "target": "~"
+            },{
+                "file": "feature-flag-configuration.yaml",
                 "chmod": "+x",
                 "target": "~"
             }]
