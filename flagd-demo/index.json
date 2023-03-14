@@ -1,7 +1,7 @@
 {
 
 	"title": "OpenFeature flagd Demo",
-	"description": "Work in progress. Expect to be broken.",
+	"description": "New to feature flags? flagd provides a shortcut to a in-house feature flag solution. Follow this tutorial to see how.",
 	"details": {
 		"steps": [{
             "title": "Initial Setup and Configuration",
@@ -18,9 +18,6 @@
 		}, {
 			"title": "Fractional Evaluations",
 			"text": "step5.md"
-		}, {
-			"title": "Next and TODO",
-			"text": "step6.md"
 		}],
 		"intro": {
 			"text": "intro.md",
@@ -28,7 +25,18 @@
 		},
 		"finish": {
 			"text": "finish.md"
-		}
+		},
+        "assets": {
+            "host01": [{
+                "file": "gitea.app.ini",
+                "chmod": "+x",
+                "target": "~"
+            }, {
+                "file": "gitea.service",
+                "chmod": "+x",
+                "target": "~"
+            }]
+        }
 	},
 	"environment": {
 		"showdashboard": true,

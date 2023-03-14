@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEBUG_VERSION=1
+DEBUG_VERSION=2
 GITEA_VERSION=1.19
 TEA_CLI_VERSION=0.9.2
 FLAGD_VERSION=0.4.0
@@ -62,50 +62,52 @@ chmod 770 /etc/gitea
 
 # Create systemd service for 'gitea'
 # Ref: https://github.com/go-gitea/gitea/blob/main/contrib/systemd/gitea.service
-cat <<EOF > /etc/systemd/system/gitea.service
-[Unit]
-Description=Gitea (Git with a cup of tea)
-After=syslog.target
-After=network.target
+mv ~/gitea.service /etc/systemd/system/gitea.service
+# cat <<EOF > /etc/systemd/system/gitea.service
+# [Unit]
+# Description=Gitea (Git with a cup of tea)
+# After=syslog.target
+# After=network.target
 
-Wants=postgresql.service
-After=postgresql.service
+# Wants=postgresql.service
+# After=postgresql.service
 
-[Service]
-RestartSec=2s
-Type=simple
-User=git
-Group=git
-WorkingDirectory=/var/lib/gitea/
-ExecStart=/usr/local/bin/gitea web --config /etc/gitea/app.ini
-Restart=always
-Environment=USER=git HOME=/home/git GITEA_WORK_DIR=/var/lib/gitea
+# [Service]
+# RestartSec=2s
+# Type=simple
+# User=git
+# Group=git
+# WorkingDirectory=/var/lib/gitea/
+# ExecStart=/usr/local/bin/gitea web --config /etc/gitea/app.ini
+# Restart=always
+# Environment=USER=git HOME=/home/git GITEA_WORK_DIR=/var/lib/gitea
 
-[Install]
-WantedBy=multi-user.target
-EOF
+# [Install]
+# WantedBy=multi-user.target
+# EOF
 
-cat <<EOF > /etc/gitea/app.ini
-APP_NAME = "Gitea: Git with a cup of tea"
-RUN_USER = "git"
-[server]
-PROTOCOL = "http"
-DOMAIN = "http://0.0.0.0:3000"
-ROOT_URL = "http://0.0.0.0:3000"
-HTTP_ADDR = "0.0.0.0"
-HTTP_PORT = "3000"
-[database]
-DB_TYPE = "postgres"
-HOST = "0.0.0.0:5432"
-NAME = "giteadb"
-USER = "gitea"
-PASSWD = "gitea"
-[repository]
-ENABLE_PUSH_CREATE_USER = true
-DEFAULT_PUSH_CREATE_PRIVATE = false
-[security]
-INSTALL_LOCK = true
-EOF
+mv ~/gitea.app.ini /etc/gitea/app.ini
+# cat <<EOF > /etc/gitea/app.ini
+# APP_NAME = "Gitea: Git with a cup of tea"
+# RUN_USER = "git"
+# [server]
+# PROTOCOL = "http"
+# DOMAIN = "http://0.0.0.0:3000"
+# ROOT_URL = "http://0.0.0.0:3000"
+# HTTP_ADDR = "0.0.0.0"
+# HTTP_PORT = "3000"
+# [database]
+# DB_TYPE = "postgres"
+# HOST = "0.0.0.0:5432"
+# NAME = "giteadb"
+# USER = "gitea"
+# PASSWD = "gitea"
+# [repository]
+# ENABLE_PUSH_CREATE_USER = true
+# DEFAULT_PUSH_CREATE_PRIVATE = false
+# [security]
+# INSTALL_LOCK = true
+# EOF
 chown -R git:git /etc/gitea
 
 # Set up gitea DB
