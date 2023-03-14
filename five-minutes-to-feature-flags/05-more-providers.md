@@ -2,9 +2,9 @@ We've gotten started with OpenFeature using a very simple but extremely limited 
 
 The beauty of OpenFeature is that we can transition to a real feature-flagging system when we're ready, without any change to how we evaluate flags.
 
-It's as simple as configuring a different provider.
+Once you have the flagging system up and runnig, integrating it into this service is as simple as configuring a different provider.
 
-For example:
+That next step is left as an exercise to you, dear reader. Documentation on the OpenFeature providers available to you is [here](https://docs.openfeature.dev/docs/reference/technologies/server/javascript), but here's a cheat sheet to illustrate how straightforward it is to switch over.
 
 ### LaunchDarkly
 ```

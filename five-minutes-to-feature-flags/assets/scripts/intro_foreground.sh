@@ -1,10 +1,10 @@
 # -----------------------------------
-# Step 1/6: APT Update
+# APT Update
 # ----------------------------------- 
 apt update
 
 # -----------------------------------
-# Step 2/6: Installing bat
+# Installing bat
 # -----------------------------------
 apt install -y bat < /dev/null
 # Symlink: Make 'batcat' available as 'bat' command
@@ -18,33 +18,17 @@ EOF
 source ~/.bashrc
 
 # -----------------------------------
-# Step 3/6: Installing Node
+# Installing Node
 # -----------------------------------
 curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - &&\
 apt install -y nodejs < /dev/null
 
-# -----------------------------------
-# Step 4/6: Installing jq
-# -----------------------------------
-apt install -y jq < /dev/null
 
 # -----------------------------------
-# Step 5/6: Installing NPM packages
-# -----------------------------------
-npm install express --save
-npm install express-promise-router --save
-npm install cowsay --save
-npm install @openfeature/js-sdk --save
-npm install --force @moredip/openfeature-minimalist-provider
-
-# -----------------------------------
-# Step 6/6: Initialising NPM package
+#  npm install
 # -----------------------------------
 cd app
-npm init -y
-mv package.json package.BAK.json
-cat package.BAK.json | jq '. += { "type": "module" }' > package.json
-rm package.BAK.json
+npm clean-install --force
 
 # ---------------------------------------------#
 #       🎉 Installation Complete 🎉           #

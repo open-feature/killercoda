@@ -2,9 +2,14 @@ import express from 'express'
 import Router from 'express-promise-router'
 import cowsay from 'cowsay'
 import { OpenFeature } from '@openfeature/js-sdk'
-import { MinimalistProvider } from '@moredip/openfeature-minimalist-provider'
+import { InMemoryProvider } from '@openfeature/in-memory-provider'
+
 
 const app = express()
+app.use(function (req, res, next) {
+  res.setHeader('content-type', 'text/plain')
+  next()
+});
 const routes = Router();
 app.use(routes);
 
@@ -13,7 +18,7 @@ const FLAG_CONFIGURATION = {
   'with-cows': true
 }
 
-const featureFlagProvider = new MinimalistProvider(FLAG_CONFIGURATION)
+const featureFlagProvider = new InMemoryProvider(FLAG_CONFIGURATION)
 
 OpenFeature.setProvider(featureFlagProvider)
 
@@ -26,6 +31,6 @@ routes.get('/', async (req, res) => {
   }
 })
 
-app.listen(3333)
-
-console.log("Server running on port 3333")
+app.listen(3333, () => {
+  console.log("Server running on port 3333")
+})

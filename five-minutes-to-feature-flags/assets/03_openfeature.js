@@ -4,6 +4,10 @@ import cowsay from 'cowsay'
 import { OpenFeature } from '@openfeature/js-sdk'
 
 const app = express()
+app.use(function (req, res, next) {
+  res.setHeader('content-type', 'text/plain')
+  next()
+});
 const routes = Router();
 app.use(routes);
 
@@ -18,6 +22,6 @@ routes.get('/', async (req, res) => {
   }
 })
 
-app.listen(3333)
-
-console.log("Server running on port 3333")
+app.listen(3333, () => {
+  console.log("Server running on port 3333")
+})
