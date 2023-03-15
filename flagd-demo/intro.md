@@ -2,7 +2,7 @@
 
 This demonstration will show a GitOps-based system and approach for storing, changing and evaluating feature flags.
 
-The demo will use [flagd](https://github.com/open-feature/flagd), an OpenFeature compliant feature flag daemon & API layer but these principles could be used with any open source or commercial feature flag vendor.
+The demo will use [flagd](https://github.com/open-feature/flagd), an OpenFeature compliant feature flag daemon & API layer but these principles apply to many open source or commercial feature flag vendors.
 
 
 ## The System
