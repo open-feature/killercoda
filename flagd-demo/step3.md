@@ -14,15 +14,20 @@ This should return `red` because the `defaultVariant` is set to `red` in Git ([s
 
 Using GitOps, change the `defaultVariant` from `red` to `yellow`:
 
-Edit `~/flags/example_flags.flagd.json`{{}} (or do it via the UI) then `git commit and git push`{{}}. Remember that the username and password is `openfeature` for both.
+Open the Editor and find this file: `~/flags/example_flags.flagd.json`{{}}
+
+Change the `defaultVariant`{{}} (line `95`{{}}) from `red`{{}} to `yellow`{{}}.
+
+Change back to Tab 2 and commit these changes to your Git repository by clicking this text:
 
 ```
 cd ~/flags
-sed -i 's/"defaultVariant": "red"/"defaultVariant": "yellow"/g' ~/flags/example_flags.flagd.json
-git add example_flags.flagd.json && git commit -m "update header color" && git push
+git add example_flags.flagd.json
+git commit -m "update header color"
+git push
 ```{{exec}}
 
-[Line 91]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/example_flags.flagd.json#L91) should now be `"defaultVariant": "yellow",`
+[Line 95]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/example_flags.flagd.json#L95) should now be `"defaultVariant": "yellow",`
 
 ## Retrieve the Flag Value Again
 

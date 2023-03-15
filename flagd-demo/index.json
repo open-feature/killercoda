@@ -7,17 +7,20 @@
             "title": "Initial Setup and Configuration",
             "text": "step1.md"
         }, {
-			"title": "flagd",
+			"title": "What is flagd?",
 			"text": "step2.md"
 		}, {
 			"title": "Flag Evaluation and GitOps Changes",
 			"text": "step3.md"
 		}, {
-			"title": "Targeting Rules",
+			"title": "Multiple Flag Sources",
 			"text": "step4.md"
 		}, {
-			"title": "Fractional Evaluations",
+			"title": "Targeting Rules",
 			"text": "step5.md"
+		}, {
+			"title": "Fractional Evaluations",
+			"text": "step6.md"
 		}],
 		"intro": {
 			"text": "intro.md",

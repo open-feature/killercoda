@@ -1,40 +1,59 @@
-So far you've seen a very basic feature flag. But often you need more flexibility *within* a given flag rule.
+## Multiple Flag Sources
 
-For this, OpenFeature provides a concept of targeting rules. Targeting rules allow you to be more specific in *who* receives a given flag value.
+What if another team has their set of flags defined elsewhere? What if you are experimenting and have some flag values saved in a local file?
 
-<!--
-## TODO
-This section needs to be updated based on the outcome of https://github.com/open-feature/flagd/pull/467.
+In both cases, you need flagd to read **both** sources, evaluate and return the value to you. You shouldn't need to care *where* the flag is stored.
 
-This should probably reference `targetedFlag` not `headerColor`.
+## Create New Flags
 
-For example, look at [headerColor]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/example_flags.flagd.json#L88-L133). 
+In tab 2 (leave flagd running), click the following to create a new file containing a single flag called `brandNewFlag`
+```
+cat <<EOF > /tmp/localFlags.json
+{
+  "flags": {
+     "brandNewFlag": {
+      "state": "ENABLED",
+      "variants": {
+        "A": "this",
+        "B": "that"
+      },
+      "defaultVariant": "A"
+    }
+  }
+}
+EOF
+```{{exec}}
 
-The rules can be read like this:
+## Attempt to retrieve brandNewFlag
+In tab 2, attempt to retrieve `brandNewFlag`. It should fail because flagd isn't yet aware of our new flag source (the JSON file):
 
-- When an `email` key is present containing `@faas.com`, the returned flag is `second` with a value of `BBB`.
-- When an `userAgent` key is present containing `Chrome`, the returned flag is `third` with a value of `CCC`.
-
-Try this out now:
-
-This command should return the `first` variant with a value of `AAA`.
 ```
 curl -X POST {{TRAFFIC_HOST1_8013}}/schema.v1.Service/ResolveString \
   -H "Content-Type: application/json" \
-  -d '{"flagKey": "targetedFlag", "context": {} }'
+  -d '{"flagKey": "brandNewFlag", "context": {} }'
 ```{{exec}}
 
-This command should return the `second` variant with a value of `BBB`.
+Expect the following output: `{"code":"not_found","message":"FlagdError:, FLAG_NOT_FOUND"}`{{}}
+
+## flagd Monitors New Flags
+
+Switch to Tab 1 and restart flagd, this time providing both flag sources:
+
+```
+flagd start \
+--port 8013 \
+--uri {{TRAFFIC_HOST1_3000}}/openfeature/flags/raw/branch/main/example_flags.flagd.json \
+--uri file:/tmp/localFlags.json
+```{{exec interrupt}}
+
+## Retrieve Flag
+
+Change back to tab 2 and again try to retrieve the flag value.
+
 ```
 curl -X POST {{TRAFFIC_HOST1_8013}}/schema.v1.Service/ResolveString \
   -H "Content-Type: application/json" \
-  -d '{"flagKey": "targetedFlag", "context": { "email": "me@faas.com" } }'
+  -d '{"flagKey": "brandNewFlag", "context": {} }'
 ```{{exec}}
 
-This command should return the `third` variant with a value of `CCC`.
-```
-curl -X POST {{TRAFFIC_HOST1_8013}}/schema.v1.Service/ResolveString \
-  -H "Content-Type: application/json" \
-  -d '{"flagKey": "targetedFlag", "context": { "userAgent": "Chrome 1.2.3" } }'
-```{{exec}}
--->
+This time you should see: `{"value":"this", "reason":"STATIC", "variant":"A"}`{{}}

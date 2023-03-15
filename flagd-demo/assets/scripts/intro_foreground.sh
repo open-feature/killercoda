@@ -1,13 +1,14 @@
 #!/bin/bash
 
-DEBUG_VERSION=2
+DEBUG_VERSION=11
 GITEA_VERSION=1.19
 TEA_CLI_VERSION=0.9.2
-FLAGD_VERSION=0.4.0
+FLAGD_VERSION=0.4.4
 
 # Download and install flagd
-wget -O flagd.tar.gz https://github.com/open-feature/flagd/releases/download/v${FLAGD_VERSION}/flagd_${FLAGD_VERSION}_Linux_x86_64.tar.gz
+wget -O flagd.tar.gz https://github.com/open-feature/flagd/releases/download/flagd%2Fv${FLAGD_VERSION}/flagd_${FLAGD_VERSION}_Linux_x86_64.tar.gz
 tar -xf flagd.tar.gz
+mv flagd_linux_x86_64 flagd
 chmod +x flagd
 mv flagd /usr/local/bin
 
@@ -136,6 +137,10 @@ sudo -u git gitea admin user generate-access-token \
 
 ACCESS_TOKEN=$(tail -n 1 /tmp/output.log)
 
+# Wait for Gitea to be available
+# Timeout after 2mins
+timeout 120 bash -c 'while [[ "$(curl --insecure -s -o /dev/null -w ''%{http_code}'' http://0.0.0.0:3000)" != "200" ]]; do sleep 5; done'
+
 # Authenticate the 'tea' CLI
 tea login add \
    --name=openfeature \
@@ -146,9 +151,14 @@ tea login add \
 
 # Create an empty repo called 'flags'
 # Clone the template repo
-tea repo create --name=flags --init=false
-git clone https://0.0.0.0:3000/flags
-wget -O ~/flags/example_flags.flagd.json https://github.com/open-feature/flagd/blob/main/config/samples/example_flags.flagd.json
+tea repo create --name=flags --branch=main --init=true > /dev/null 2>&1
+git clone http://openfeature:openfeature@0.0.0.0:3000/openfeature/flags
+wget -O ~/flags/example_flags.flagd.json https://raw.githubusercontent.com/open-feature/flagd/main/config/samples/example_flags.flagd.json
+cd ~/flags
+git config credential.helper cache
+git add -A
+git commit -m "add flags"
+git push
 
 # ---------------------------------------------#
 #       🎉 Installation Complete 🎉           #
