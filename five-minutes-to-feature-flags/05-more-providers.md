@@ -18,6 +18,8 @@ OpenFeature.setProvider(new LaunchDarklyProvider(ldClient));
 
 ### flagd
 ```
+import { FlagdProvider } from '@openfeature/flagd-provider';
+
 OpenFeature.setProvider(new FlagdProvider({
     host: '[FLAGD_HOST]',
     port: 8013,
