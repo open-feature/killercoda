@@ -1,0 +1,52 @@
+{
+
+	"title": "OpenFeature flagd Demo",
+	"description": "New to feature flags? flagd provides a shortcut to a in-house feature flag solution. Follow this tutorial to see how.",
+	"details": {
+		"steps": [{
+            "title": "Initial Setup and Configuration",
+            "text": "step1.md"
+        }, {
+			"title": "What is flagd?",
+			"text": "step2.md"
+		}, {
+			"title": "Flag Evaluation and GitOps Changes",
+			"text": "step3.md"
+		}, {
+			"title": "Multiple Flag Sources",
+			"text": "step4.md"
+		}, {
+			"title": "Targeting Rules",
+			"text": "step5.md"
+		}, {
+			"title": "Fractional Evaluations",
+			"text": "step6.md"
+		}],
+		"intro": {
+			"text": "intro.md",
+            "foreground": "assets/scripts/intro_foreground.sh"
+		},
+		"finish": {
+			"text": "finish.md"
+		},
+        "assets": {
+            "host01": [{
+                "file": "gitea.app.ini",
+                "chmod": "+x",
+                "target": "~"
+            }, {
+                "file": "gitea.service",
+                "chmod": "+x",
+                "target": "~"
+            }]
+        }
+	},
+	"environment": {
+		"showdashboard": true,
+		"dashboard": "Dashboard",
+		"uilayout": "terminal"
+	},
+	"backend": {
+		"imageid": "ubuntu"
+	}
+}
