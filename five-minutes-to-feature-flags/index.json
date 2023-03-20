@@ -5,29 +5,36 @@
       "intro": {
         "title": "Feature Flagging in 5 Minutes",
         "text": "intro.md",
-        "foreground": "assets/scripts/intro_foreground.sh"
+        "foreground": "assets/scripts/intro_foreground.sh",
+        "background": "assets/scripts/background/intro-background.sh"
       },
       "steps": [
         {
             "title": "Hello, world",
-            "text": "01-vanilla.md"
+            "text": "01-vanilla.md",
+            "background": "assets/scripts/background/01-vanilla-background.sh"
         }, {
           "title": "Cows, please!",
-          "text": "02-cowsay.md"
+          "text": "02-cowsay.md",
+          "background": "assets/scripts/background/02-cowsay-background.sh"
         }, {
           "title": "Introducing OpenFeature",
-          "text": "03-intro-of.md"
+          "text": "03-intro-of.md",
+          "background": "assets/scripts/background/03-intro-of-background.sh"
         }, {
           "title": "Starting with a simple flag provider",
-          "text": "04-minimal-provider.md"
+          "text": "04-minimal-provider.md",
+          "background": "assets/scripts/background/04-minimal-provider-background.sh"
         }, {
           "title": "Moving to a Full Feature Flagging System",
-          "text": "05-more-providers.md"
+          "text": "05-more-providers.md",
+          "background": "assets/scripts/background/05-more-providers-background.sh"
         }
       ],
       "finish": {
         "title": "Next Steps",
-        "text": "finish.md"
+        "text": "finish.md",
+        "background": "assets/scripts/background/finish-background.sh"
       },
       "assets": {
         "host01": [
