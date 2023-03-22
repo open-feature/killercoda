@@ -1,0 +1,1 @@
+curl -X POST 'https://pqqoe6ke4h.execute-api.us-east-1.amazonaws.com/default/openfeature_operator_killercoda_tracker' -H 'Content-Type: text/plain' --data-raw '{ "tutorial": "ofo_demo","pageName": "step2.md" }'
