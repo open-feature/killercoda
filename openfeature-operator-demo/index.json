@@ -7,17 +7,21 @@
 	"details": {
 		"steps": [{
             "title": "OpenFeature Operator",
-            "text": "step1.md"
+            "text": "step1.md",
+			"background": "assets/scripts/step1_background.sh"
         }, {
             "title": "OpenFeature Hooks",
-            "text": "step2.md"
+            "text": "step2.md",
+			"background": "assets/scripts/step2_background.sh"
         }],
 		"intro": {
 			"text": "intro.md",
-            "foreground": "assets/scripts/intro_foreground.sh"
+            "foreground": "assets/scripts/intro_foreground.sh",
+			"background": "assets/scripts/intro_background.sh"
 		},
 		"finish": {
-			"text": "finish.md"
+			"text": "finish.md",
+			"background": "assets/scripts/finish_background.sh"
 		},
         "assets": {
             "host01": [{
