@@ -1,5 +1,5 @@
 
-DEBUG_VERSION=7
+DEBUG_VERSION=8
 DEMO_APP_PORT=30000
 CERT_MANAGER_VERSION=v1.10.1
 #########################################################
