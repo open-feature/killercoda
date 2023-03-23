@@ -1,4 +1,4 @@
-DEBUG_VERSION=8
+DEBUG_VERSION=9
 
 ###############################################
 # Step [1/3]: Install docker compose plugin
