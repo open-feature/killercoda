@@ -18,7 +18,6 @@ sudo apt install -y docker-compose-plugin  < "/dev/null"
 ###############################################
 git clone https://github.com/open-feature/playground
 cd playground
-git pull origin pull/59/head
 sed -i 's#image: jaegertracing/all-in-one:1.38#image: docker.io/jaegertracing/all-in-one:1.38#g' ./docker-compose.yaml
 sed -i 's#image: thomaspoignant/go-feature-flag-relay-proxy:v0.3.0#image: docker.io/thomaspoignant/go-feature-flag-relay-proxy:v0.3.0#g' ./docker-compose.yaml
 
