@@ -16,9 +16,9 @@ spec:
       hex-color:
         state: ENABLED
         variants:
-          red: CC0000
-          green: 00CC00
-          blue: 0000CC
+          red: c05543
+          green: 2f5230
+          blue: 0d507b
           yellow: yellow
         defaultVariant: blue
       fib-algo:
