@@ -26,10 +26,16 @@ apt install -y nodejs < /dev/null
 
 
 # -----------------------------------
+# Clone the repo
+# -----------------------------------
+git clone https://github.com/open-feature/five-minutes-to-feature-flags
+mv five-minutes-to-feature-flags/* app/
+
+# -----------------------------------
 #  npm install
 # -----------------------------------
 cd app
-npm clean-install --force
+npm ci
 
 # ---------------------------------------------#
 #       🎉 Installation Complete 🎉           #

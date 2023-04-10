@@ -1,60 +1,69 @@
 {
-
-	"title": "OpenFeature flagd Demo",
-	"description": "New to feature flags? flagd provides a shortcut to a in-house feature flag solution. Follow this tutorial to see how.",
-	"details": {
-		"steps": [{
-            "title": "Initial Setup and Configuration",
-            "text": "step1.md",
-			"background": "assets/scripts/step1_background.sh"
-        }, {
-			"title": "What is flagd?",
-			"text": "step2.md",
-			"background": "assets/scripts/step2_background.sh"
-		}, {
-			"title": "Flag Evaluation and GitOps Changes",
-			"text": "step3.md",
-			"background": "assets/scripts/step3_background.sh"
-		}, {
-			"title": "Multiple Flag Sources",
-			"text": "step4.md",
-			"background": "assets/scripts/step4_background.sh"
-		}, {
-			"title": "Targeting Rules",
-			"text": "step5.md",
-			"background": "assets/scripts/step5_background.sh"
-		}, {
-			"title": "Fractional Evaluations",
-			"text": "step6.md",
-			"background": "assets/scripts/step6_background.sh"
-		}],
-		"intro": {
-			"text": "intro.md",
-            "foreground": "assets/scripts/intro_foreground.sh",
-			"background": "assets/scripts/intro_background.sh"
-		},
-		"finish": {
-			"text": "finish.md",
-			"background": "assets/scripts/finish_background.sh"
-		},
-        "assets": {
-            "host01": [{
-                "file": "gitea.app.ini",
-                "chmod": "+x",
-                "target": "~"
-            }, {
-                "file": "gitea.service",
-                "chmod": "+x",
-                "target": "~"
-            }]
+  "title": "OpenFeature flagd Demo",
+  "description": "New to feature flags? flagd provides a shortcut to a in-house feature flag solution. Follow this tutorial to see how.",
+  "details": {
+    "steps": [
+      {
+        "title": "Initial Setup and Configuration",
+        "text": "step1.md",
+        "background": "assets/scripts/step1_background.sh"
+      },
+      {
+        "title": "What is flagd?",
+        "text": "step2.md",
+        "background": "assets/scripts/step2_background.sh"
+      },
+      {
+        "title": "Flag Evaluation and GitOps Changes",
+        "text": "step3.md",
+        "background": "assets/scripts/step3_background.sh"
+      },
+      {
+        "title": "Multiple Flag Sources",
+        "text": "step4.md",
+        "background": "assets/scripts/step4_background.sh"
+      },
+      {
+        "title": "Targeting Rules",
+        "text": "step5.md",
+        "background": "assets/scripts/step5_background.sh"
+      },
+      {
+        "title": "Fractional Evaluations",
+        "text": "step6.md",
+        "background": "assets/scripts/step6_background.sh"
+      }
+    ],
+    "intro": {
+      "text": "intro.md",
+      "foreground": "assets/scripts/intro_foreground.sh",
+      "background": "assets/scripts/intro_background.sh"
+    },
+    "finish": {
+      "text": "finish.md",
+      "background": "assets/scripts/finish_background.sh"
+    },
+    "assets": {
+      "host01": [
+        {
+          "file": "gitea.app.ini",
+          "chmod": "+x",
+          "target": "~"
+        },
+        {
+          "file": "gitea.service",
+          "chmod": "+x",
+          "target": "~"
         }
-	},
-	"environment": {
-		"showdashboard": true,
-		"dashboard": "Dashboard",
-		"uilayout": "terminal"
-	},
-	"backend": {
-		"imageid": "ubuntu"
-	}
+      ]
+    }
+  },
+  "environment": {
+    "showdashboard": true,
+    "dashboard": "Dashboard",
+    "uilayout": "terminal"
+  },
+  "backend": {
+    "imageid": "ubuntu"
+  }
 }
