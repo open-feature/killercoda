@@ -32,7 +32,7 @@ curl http://localhost:3333
 ```{{exec}}
 
 Don't be surprised if the output looks the same as before - `withCow` is still set to `false` in that file, so it should be returning the same response as before.
-However, if we now update it to `true` then the format should change. 
+However, if we now update it to `true` then the format should change.
 
 Give it a try! Open the server code (`app/02_basic_flags.js`) in the IDE (that `Editor` tab at the top left of the terminal to the right) and set `withCow` to true:
 
@@ -77,6 +77,6 @@ it should look a bit more exciting:
 Beautiful.
 
 # The Crudest Flag
-That `withCow`{{}} boolean and its accompanying conditional check is a very basic implementation of a *Feature Flag*. It lets us hide an experimental or unfinished feature, but also easily switch the feature on while we're building and testing it. 
+That `withCow`{{}} boolean and its accompanying conditional check is a very basic implementation of a *Feature Flag*. It lets us hide an experimental or unfinished feature, but also easily switch the feature on while we're building and testing it.
 
 But managing these flags by changing hardcoded constants gets old pretty fast. Teams that uses feature flags in any significant way soon reach for a feature flagging framework. We'll take a confident step in that direction next, by setting up the [OpenFeature](https://openfeature.dev) SDK...

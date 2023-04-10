@@ -43,6 +43,6 @@ Let's fix that by configuring the SDK with a feature flag provider!
 
 ## Configuring OpenFeature
 
-If this was a fancy production-grade system we'd probably want to connect the OpenFeature SDK to a full-fledged feature flagging system - a commercial product such as LaunchDarkly or Split, an open-source system like [FlagD](https://github.com/open-feature/flagd), or perhaps a custom internal system - so that it can provide flagging decisions from that system.
+If this was a fancy production-grade system we'd probably want to connect the OpenFeature SDK to a full-fledged feature flagging system - a commercial product such as [LaunchDarkly](https://launchdarkly.com/) or [Split](https://www.split.io/), an open-source system like [Flagd](https://github.com/open-feature/flagd), or perhaps a custom internal system - so that it can provide flagging decisions from that system.
 
-Connecting OpenFeature to one of these backends is very straightforward, but it does require us to get a backend set up and ready to go. Instead, just to get us started, we'll use a super-simple flag provider that doesn't need a backend. 
+Connecting OpenFeature to one of these backends is very straightforward, but it does require us to get a backend set up and ready to go. Instead, just to get us started, we'll use a super-simple flag provider that doesn't need a backend.
