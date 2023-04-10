@@ -3,7 +3,7 @@
 DEBUG_VERSION=12
 GITEA_VERSION=1.19
 TEA_CLI_VERSION=0.9.2
-FLAGD_VERSION=0.4.4
+FLAGD_VERSION=0.4.5
 
 # Download and install flagd
 wget -O flagd.tar.gz https://github.com/open-feature/flagd/releases/download/flagd%2Fv${FLAGD_VERSION}/flagd_${FLAGD_VERSION}_Linux_x86_64.tar.gz
