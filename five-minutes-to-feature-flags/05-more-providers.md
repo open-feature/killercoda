@@ -4,7 +4,7 @@ The beauty of OpenFeature is that we can transition to a real feature-flagging s
 
 Once you have the flagging system up and running, integrating it into this service is as simple as configuring a different provider.
 
-That next step is left as an exercise to you, dear reader. Documentation on the OpenFeature providers available to you is [here](https://docs.openfeature.dev/docs/reference/technologies/server/javascript), but here's a cheat sheet to illustrate how straightforward it is to switch over.
+That next step is left as an exercise to you, dear reader. Documentation on the OpenFeature providers available to you is [here](https://openfeature.dev/docs/reference/technologies/server/javascript), but here's a cheat sheet to illustrate how straightforward it is to switch over.
 
 ### CloudBees
 

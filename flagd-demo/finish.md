@@ -39,4 +39,4 @@ func main() {
 ```
 
 - [Get started with flagd](https://github.com/open-feature/flagd)
-- Questions? [Join the community](https://docs.openfeature.dev/community/)
+- Questions? [Join the community](https://openfeature.dev/community/)

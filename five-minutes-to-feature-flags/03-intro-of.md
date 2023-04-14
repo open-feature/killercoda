@@ -1,4 +1,4 @@
-[OpenFeature](https://openfeature.dev/) is an open standard that lets us add feature flagging capabilities to our service in a vendor-neutral way. You can read more about the benefits of this approach [here](https://docs.openfeature.dev/blog/openfeature-a-standard-for-feature-flagging), but for now let's get our Hello, World service set up with OpenFeature - it shouldn't take more than a minute or two.
+[OpenFeature](https://openfeature.dev/) is an open standard that lets us add feature flagging capabilities to our service in a vendor-neutral way. You can read more about the benefits of this approach [here](https://openfeature.dev/blog/openfeature-a-standard-for-feature-flagging), but for now let's get our Hello, World service set up with OpenFeature - it shouldn't take more than a minute or two.
 
 We'll create a new version of our server (`app/03_openfeature.js`) which looks something like this:
 
@@ -35,7 +35,7 @@ curl http://localhost:3333
 
 and we should be back to getting a vanilla `Hello, World!` response. Why is that?
 
-Well, the OpenFeature SDK doesn't provide feature flagging capabilities by itself. We have to configure it with a "[provider](https://docs.openfeature.dev/docs/specification/glossary/#provider)" which connects the SDK to a feature flagging implementation which can actually make the flagging decisions we need. (You can read more about OpenFeature's architecture [here](https://docs.openfeature.dev/docs/reference/intro#what-is-openfeature).)
+Well, the OpenFeature SDK doesn't provide feature flagging capabilities by itself. We have to configure it with a "[provider](https://openfeature.dev/docs/specification/glossary/#provider)" which connects the SDK to a feature flagging implementation which can actually make the flagging decisions we need. (You can read more about OpenFeature's architecture [here](https://openfeature.dev/docs/reference/intro#what-is-openfeature).)
 
 Since we haven't configured the SDK with a provider it has no way of making feature flagging decisions and will just return default values. In this case, `with-cows` is defaulting to `false`, so now we don't see any cows in our output.
 
