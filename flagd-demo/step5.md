@@ -22,5 +22,5 @@ This command should return the `binet` variant with a value of `binet`.
 ```
 curl -X POST {{TRAFFIC_HOST1_8013}}/schema.v1.Service/ResolveString \
   -H "Content-Type: application/json" \
-  -d '{"flagKey": "targetedFlag", "context": { "email": "me@faas.com" } }'
+  -d '{"flagKey": "fibAlgo", "context": { "email": "me@faas.com" } }'
 ```{{exec}}
