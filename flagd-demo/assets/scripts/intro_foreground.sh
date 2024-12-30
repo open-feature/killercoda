@@ -1,9 +1,9 @@
 #!/bin/bash
 
-DEBUG_VERSION=12
+DEBUG_VERSION=13
 GITEA_VERSION=1.19
 TEA_CLI_VERSION=0.9.2
-FLAGD_VERSION=0.4.5
+FLAGD_VERSION=0.11.5
 
 # Download and install flagd
 wget -O flagd.tar.gz https://github.com/open-feature/flagd/releases/download/flagd%2Fv${FLAGD_VERSION}/flagd_${FLAGD_VERSION}_Linux_x86_64.tar.gz
@@ -153,7 +153,7 @@ tea login add \
 # Clone the template repo
 tea repo create --name=flags --branch=main --init=true > /dev/null 2>&1
 git clone http://openfeature:openfeature@0.0.0.0:3000/openfeature/flags
-wget -O ~/flags/example_flags.flagd.json https://raw.githubusercontent.com/open-feature/flagd/main/config/samples/example_flags.flagd.json
+wget -O ~/flags/example_flags.flagd.json https://raw.githubusercontent.com/open-feature/flagd/refs/tags/flagd/v${FLAGD_VERSION}/samples/example_flags.flagd.json
 cd ~/flags
 git config credential.helper cache
 git add -A

@@ -5,9 +5,6 @@
         },
         {
           "pattern": "localhost"
-        },
-        {
-          "pattern": "^https://expressjs.com/"
         }
     ],
     "aliveStatusCodes": [200, 206]
