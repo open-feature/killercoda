@@ -27,7 +27,7 @@ git commit -m "update header color"
 git push
 ```{{exec}}
 
-[Line 95]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/example_flags.flagd.json#L96) should now be `"defaultVariant": "yellow",`
+[Line 96]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/example_flags.flagd.json#L96) should now be `"defaultVariant": "yellow",`
 
 ## Retrieve the Flag Value Again
 
