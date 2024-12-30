@@ -1,10 +1,10 @@
 Need *even more* flexibility? Fractional evaluations allow for even more powerful flag targeting.
 
-Look at the [headerColor]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/example_flags.flagd.json#L88-L125) flag.
+Look at the [headerColor]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/example_flags.flagd.json#L89-120) flag.
 
 The available variants are `red`, `blue`, `green` and `yellow`. The `defaultVariant` should now be `yellow` (you changed it from `red` in the previous step).
 
-So everyone receives `yellow`, right? No. There is a [targeting rule]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/example_flags.flagd.json#L97-L125) which can be read like this:
+So everyone receives `yellow`, right? No. There is a [targeting rule]({{TRAFFIC_HOST1_3000}}/openfeature/flags/src/branch/main/example_flags.flagd.json#L98-L119) which can be read like this:
 
 Everyone receives the `defaultVariant`{{}} of `yellow`{{}} **except**...
 
