@@ -7,7 +7,7 @@
           "pattern": "localhost"
         },
         {
-          "pattern": "^https://expressjs.com/"
+          "pattern": "^https://blog.thepete.net/"
         }
     ],
     "aliveStatusCodes": [200, 206]
