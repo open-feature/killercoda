@@ -4,13 +4,13 @@ kind: Namespace
 metadata:
   name: open-feature-demo
 ---
-apiVersion: core.openfeature.dev/v1alpha2
-kind: FeatureFlagConfiguration
+apiVersion: core.openfeature.dev/v1beta1
+kind: FeatureFlag
 metadata:
   name: end-to-end
   namespace: open-feature-demo
 spec:
-  featureFlagSpec:
+  flagSpec:
     flags:
       new-welcome-message:
         state: ENABLED
@@ -34,15 +34,11 @@ spec:
           loop: loop
           binet: binet
         defaultVariant: recursive
-        "targeting": {
-          "if": [
-            {
-              "in": [ "@faas.com", {
-                "var": [ "email" ]
-              } ]
-            }, "binet", null
-          ]
-        }
+        "targeting":
+          {
+            "if":
+              [{ "in": ["@faas.com", { "var": ["email"] }] }, "binet", null],
+          }
 ---
 # Deployment of a demo-app using our custom resource
 apiVersion: apps/v1
@@ -95,3 +91,4 @@ metadata:
   name: open-feature-demo-sa
   namespace: open-feature-demo
 automountServiceAccountToken: true
+
