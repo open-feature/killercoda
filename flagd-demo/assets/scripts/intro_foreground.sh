@@ -60,9 +60,10 @@ ACCESS_TOKEN=$(docker exec -u git gitea gitea admin user generate-access-token \
   --raw > /tmp/output.log
 )
 
-# Wait for Gitea to be available
-# Timeout after 2mins
-timeout 120 bash -c 'while [[ "$(curl --insecure -s -o /dev/null -w ''%{http_code}'' http://0.0.0.0:3000)" != "200" ]]; do sleep 5; done'
+# Download and install 'gitea' CLI: 'tea'
+wget -O tea https://dl.gitea.com/tea/${TEA_CLI_VERSION}/tea-${TEA_CLI_VERSION}-linux-amd64
+chmod +x tea
+mv tea /usr/local/bin
 
 # Authenticate the 'tea' CLI
 tea login add \
