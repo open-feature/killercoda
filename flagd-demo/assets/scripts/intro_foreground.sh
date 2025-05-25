@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DEBUG_VERSION=13
-GITEA_VERSION=1.19
+GITEA_VERSION=1.23.8
 TEA_CLI_VERSION=0.9.2
 FLAGD_VERSION=0.11.5
 
@@ -16,6 +16,22 @@ mv flagd /usr/local/bin
 wget -O tea https://dl.gitea.com/tea/${TEA_CLI_VERSION}/tea-${TEA_CLI_VERSION}-linux-amd64
 chmod +x tea
 mv tea /usr/local/bin
+
+mkdir -p /tmp/gpg-temp
+chmod 700 /tmp/gpg-temp
+
+# Download 'gitea'
+wget -O gitea https://dl.gitea.com/gitea/${GITEA_VERSION}/gitea-${GITEA_VERSION}-linux-amd64
+chmod +x gitea
+
+wget -O gitea-${GITEA_VERSION}-linux-amd64.asc https://dl.gitea.com/gitea/${GITEA_VERSION}/gitea-${GITEA_VERSION}-linux-amd64.asc
+
+gpg --homedir /tmp/gpg-temp --keyserver keys.openpgp.org --recv 7C9E68152594688862D62AF62D9AE806EC1592E2
+gpg --homedir /tmp/gpg-temp --verify gitea-${GITEA_VERSION}-linux-amd64.asc gitea
+
+mv gitea /usr/local/bin
+
+rm -rf /tmp/gpg-temp
 
 #################
 # Install postgresql for Gitea
