@@ -54,6 +54,10 @@
           "file": "gitea.service",
           "chmod": "+x",
           "target": "~"
+        },
+        {
+          "file": "docker-compose.yaml",
+          "target": "~"
         }
       ]
     }

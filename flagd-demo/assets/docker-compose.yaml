@@ -1,0 +1,45 @@
+networks:
+    gitea:
+        external: false
+
+services:
+    db:
+        image: postgres
+        restart: always
+        shm_size: 128mb
+        environment:
+            POSTGRES_USER: gitea
+            POSTGRES_PASSWORD: gitea
+            POSTGRES_DB: gitea
+        networks:
+            - gitea
+        volumes:
+            - gitea-db:/var/lib/postgresql/data
+
+    server:
+        image: docker.gitea.com/gitea:1.23.8
+        container_name: gitea
+        restart: always
+        environment:
+            - USER_UID=1000
+            - USER_GID=1000
+            - GITEA__database__DB_TYPE=postgres
+            - GITEA__database__HOST=db:5432
+            - GITEA__database__NAME=gitea
+            - GITEA__database__USER=gitea
+            - GITEA__database__PASSWD=gitea
+        networks:
+            - gitea
+        volumes:
+            # - ~/gitea.app.ini:/data/gitea/conf/app.ini
+            - gitea:/data
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
+        ports:
+            - "3000:3000"
+            - "222:22"
+        depends_on:
+            - db
+volumes:
+    gitea-db:
+    gitea:
