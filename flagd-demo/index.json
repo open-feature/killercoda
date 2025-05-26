@@ -57,7 +57,7 @@
         },
         {
           "file": "docker-compose.yaml",
-          "target": "~"
+          "target": "/root/docker-compose.yaml"
         }
       ]
     }
