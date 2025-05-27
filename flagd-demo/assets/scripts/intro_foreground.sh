@@ -22,15 +22,20 @@ until docker exec gitea curl -s http://localhost:3000/api/v1/version | tee /tmp/
   sleep 2
 done
 
-# Create a user called 'openfeature' with password 'openfeature'
-# Using the gitea service started with docker
-echo "Creating openfeature admin gitea user..."
-docker exec -u git gitea gitea admin user create \
-  --username=openfeature \
-  --password=openfeature \
-  --email=me@faas.com \
-  --must-change-password=false || echo "User already exits."
-  # -c /etc/gitea
+# Check if openfeature user exists
+user_list=$(docker exec -u git gitea gitea admin user list 2>/dev/null)
+
+if ! echo "$user_list" | grep -qw "openfeature"; then
+  # Create a user called 'openfeature' with password 'openfeature'
+  # Using the gitea service started with docker
+  echo "Creating openfeature admin gitea user..."
+  docker exec -u git gitea gitea admin user create \
+    --username=openfeature \
+    --password=openfeature \
+    --email=me@faas.com \
+    --must-change-password=false
+    # -c /etc/gitea
+fi
 
 # Setup access token for tea CLI set up
 echo "Generating gitea access token for tea CLI..."
