@@ -1,88 +1,76 @@
 #!/bin/bash
 
+set -euo pipefail
+
 DEBUG_VERSION=13
 GITEA_VERSION=1.23.8
 TEA_CLI_VERSION=0.9.2
 FLAGD_VERSION=0.11.5
 
-# Download and install flagd
-wget -O flagd.tar.gz https://github.com/open-feature/flagd/releases/download/flagd%2Fv${FLAGD_VERSION}/flagd_${FLAGD_VERSION}_Linux_x86_64.tar.gz
-tar -xf flagd.tar.gz
-mv flagd_linux_x86_64 flagd
-chmod +x flagd
-mv flagd /usr/local/bin
+# if [[ -n "${TRAFFIC_HOST1_3000:-}" ]]; then
+#   GITEA_URL="https://${TRAFFIC_HOST1_3000}"
+# else
+#   GITEA_URL="http://localhost:3000"
+# fi
 
-rm flagd.tar.gz
-
+echo "Starting Gitea & flagd docker containers..."
 docker compose -f ~/docker-compose.yaml up -d
 
-# Add 'git' user
-adduser \
-  --system \
-  --shell /bin/bash \
-  --gecos 'Git Version Control' \
-  --group \
-  --disabled-password \
-  --home /home/git \
-  git
+# Confirm gitea is functional before making calls
+until docker exec gitea curl -s http://localhost:3000/api/v1/version | tee /tmp/version_output.txt | grep -q "version"; do
+  echo "Gitea not ready yet..."
+  sleep 2
+done
 
-# Configure git for 'ubuntu' and 'git' users
-git config --system user.email "me@faas.com"
-git config --system user.name "OpenFeature"
-
-# Wait for Gitea to be available
-# Timeout after 2mins
-timeout 120 bash -c 'while [[ "$(curl --insecure -s -o /dev/null -w "%{http_code}" http://localhost:3000)" != "200" ]]; do sleep 5; done'
-# timeout 120 bash -c 'until curl -s -o /dev/null -w "%{http_code}" http://0.0.0.0:3000)
-
-# Create a user called 'openfeature'
-# With password 'openfeature'
+# Create a user called 'openfeature' with password 'openfeature'
 # Using the gitea service started with docker
+echo "Creating openfeature admin gitea user..."
 docker exec -u git gitea gitea admin user create \
-   --username=openfeature \
-   --password=openfeature \
-   --email=me@faas.com \
-   --must-change-password=false \
-   -c data/gitea/conf/app.ini
-
-# sudo -u git gitea admin user generate-access-token \
-#   --username=openfeature \
-#   --scopes=repo \
-#   -c=/etc/gitea/app.ini \
-#   --raw > /tmp/output.log
-
-# ACCESS_TOKEN=$(tail -n 1 /tmp/output.log)
-
-ACCESS_TOKEN=$(docker exec -u git gitea gitea admin user generate-access-token \
   --username=openfeature \
-  --scopes=repo \
--c data/gitea/conf/app.ini \
-  --raw > /tmp/output.log
-)
+  --password=openfeature \
+  --email=me@faas.com \
+  --must-change-password=false || echo "User already exits."
+  # -c /etc/gitea
 
-# Download and install 'gitea' CLI: 'tea'
-wget -O tea https://dl.gitea.com/tea/${TEA_CLI_VERSION}/tea-${TEA_CLI_VERSION}-linux-amd64
-chmod +x tea
-mv tea /usr/local/bin
+# Setup access token for tea CLI set up
+echo "Generating gitea access token for tea CLI..."
+docker exec -u git gitea gitea admin user generate-access-token \
+  --username=openfeature \
+  --scopes=all \
+  --raw > /tmp/output.log 
+  # -c /etc/gitea \
+
+ACCESS_TOKEN=$(tail -n 1 /tmp/output.log)
+
+if ! type -P tea &> /dev/null; then 
+  echo "Installing tea CLI..."
+  curl -sL https://dl.gitea.com/tea/${TEA_CLI_VERSION}/tea-${TEA_CLI_VERSION}-linux-amd64 -o /usr/local/bin/tea
+  chmod +x /usr/local/bin/tea
+fi
 
 # Authenticate the 'tea' CLI
 tea login add \
-   --name=openfeature \
-   --user=openfeature \
-   --password=openfeature \
-   --url=http://0.0.0.0:3000 \
-   --token=$ACCESS_TOKEN > /dev/null 2>&1
+  --name local \
+  --url=http://localhost:3000 \
+  --token=$ACCESS_TOKEN > /dev/null 2>&1
 
 # Create an empty repo called 'flags'
 # Clone the template repo
-tea repo create --name=flags --branch=main --init=true > /dev/null 2>&1
-git clone http://openfeature:openfeature@0.0.0.0:3000/openfeature/flags
+tea repo create \
+  --name=flags \
+  --branch=main \
+  --init=true >/dev/null
+
+git clone http://openfeature:openfeature@localhost:3000/openfeature/flags
+
 wget -O ~/flags/example_flags.flagd.json https://raw.githubusercontent.com/open-feature/flagd/refs/tags/flagd/v${FLAGD_VERSION}/samples/example_flags.flagd.json
-cd ~/flags
+
 git config credential.helper cache
+
+cd ~/flags
 git add -A
-git commit -m "add flags"
-git push
+git commit -m "seed flags from flagd json"
+git push origin main
 
 # ---------------------------------------------#
 #       🎉 Installation Complete 🎉           #

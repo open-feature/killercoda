@@ -10,23 +10,33 @@ services:
         environment:
             - USER_UID=1000
             - USER_GID=1000
-            - GITEA__security__INSTALL_LOCK=true
+            - GITEA_DEFAULT__RUN_USER=git
             - GITEA__database__DB_TYPE=sqlite3
-            - GITEA__server__DOMAIN=localhost
             - GITEA__server__ROOT_URL=http://localhost:3000/
+            - GITEA__server__START_SSH_SERVER=false
+            - GITEA__server__DISABLE_SSH=true
+            - GITEA__security__INSTALL_LOCK=true
+            - GITEA__repository__ENABLE_PUSH_CREATE_USE=true
+            - GITEA__repository__DEFAULT_PUSH_CREATE_PRIVATE=true
+            
         networks:
             - gitea
         volumes:
-            - ./gitea:/data
+            - gitea-data:/data
+            - gitea-config:/etc/gitea
         ports:
             - "3000:3000"
-            - "222:22"
+            # - "222:22"
 
     flagd:
         image: ghcr.io/open-feature/flagd:v0.11.5
-        command: sleep infinity
+        # command: sleep infinity
         volumes:
-            - ./gitea:/repo
+            - gitea-repo:/repo
+        networks:
+            - gitea
 
 volumes:
-    gitea:
+    gitea-data:
+    gitea-config:
+    gitea-repo:
