@@ -40,6 +40,8 @@ services:
             - gitea-net
         depends_on:
             - server
+        ports:
+            - "8013:8013"   
 
 volumes:
     gitea-data:
