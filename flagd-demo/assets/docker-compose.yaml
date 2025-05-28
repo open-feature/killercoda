@@ -30,19 +30,5 @@ services:
         ports:
             - "3000:3000"
 
-    flagd:
-        image: ghcr.io/open-feature/flagd:v0.11.5
-        container_name: flagd
-        command: start --port 8013 --uri http://gitea:3000/openfeature/flags/raw/branch/main/example_flags.flagd.json
-        volumes:
-            - flagd-data:/repo
-        networks:
-            - gitea-net
-        depends_on:
-            - server
-        ports:
-            - "8013:8013"   
-
 volumes:
     gitea-data:
-    flagd-data:

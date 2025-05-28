@@ -6,22 +6,23 @@ TEA_CLI_VERSION=0.9.2
 FLAGD_VERSION=0.11.5
 
 if [[ -n "${TRAFFIC_HOST1_3000:-}" ]]; then
-  GITEA_URL="http://${TRAFFIC_HOST1_3000}"
-elif [[ -n "${GITEA_URL:-}" ]]; then
-  # Use passed-in GITEA_URL environment variable (e.g. host.docker.internal on Mac/Windows)
-  GITEA_URL="${GITEA_URL}"
+  BASE_URL="http://${TRAFFIC_HOST1_3000}"
+elif [[ -n "${BASE_URL:-}" ]]; then
+  # Use passed-in BASE_URL environment variable (e.g. host.docker.internal on Mac/Windows)
+  # Makes it easier to run locally with mock killercoda env dockerfile
+  BASE_URL="${BASE_URL}"
 else
   # Fallback default
-  GITEA_URL="http://gitea:3000"
+  BASE_URL="http://gitea"
 fi
 
-echo "Using Gitea URL: $GITEA_URL"
+echo "Using Gitea URL: $BASE_URL"
 
-echo "Starting Gitea & flagd docker containers..."
+echo "Starting Gitea docker container..."
 docker compose -f ~/docker-compose.yaml up -d
 
 # Confirm gitea is functional before making calls
-until docker exec gitea curl -s "$GITEA_URL/api/v1/version" | grep -q "version"; do
+until curl -s "$BASE_URL:3000/api/v1/version" | grep -q "version"; do
   echo "Gitea not ready yet..."
   sleep 2
 done
@@ -83,7 +84,7 @@ fi
 echo "Authenticate tea CLI..."
 tea login add \
   --name=local \
-  --url="$GITEA_URL" \
+  --url="$BASE_URL:3000" \
   --token="$ACCESS_TOKEN" # > /dev/null 2>&1
 
 # Check if repo 'flags' exists
@@ -111,7 +112,7 @@ adduser \
 git config --system user.email "me@faas.com"
 git config --system user.name "OpenFeature"
 
-git clone http://openfeature:openfeature@${GITEA_URL#http://}/openfeature/flags
+git clone http://openfeature:openfeature@${BASE_URL#http://}:3000/openfeature/flags
 
 cd flags
 wget -O example_flags.flagd.json https://raw.githubusercontent.com/open-feature/flagd/main/samples/example_flags.flagd.json
@@ -120,6 +121,15 @@ git config credential.helper cache
 git add -A
 git commit -m "seed flags from flagd json"
 git push origin main
+
+if ! type -P flagd &> /dev/null; then
+  echo "Installing flagd..."
+  wget -O flagd.tar.gz https://github.com/open-feature/flagd/releases/download/flagd%2Fv${FLAGD_VERSION}/flagd_${FLAGD_VERSION}_Linux_x86_64.tar.gz
+  tar -xf flagd.tar.gz
+  mv flagd_linux_x86_64 flagd
+  chmod +x flagd
+  mv flagd /usr/local/bin
+fi
 
 echo  🎉 Installation Complete 🎉 Please proceed now...   
 
