@@ -1,6 +1,6 @@
 networks:
-    gitea:
-        external: false
+    gitea-net:
+        driver: bridge
 
 services:
     server:
@@ -8,38 +8,39 @@ services:
         container_name: gitea
         restart: always
         environment:
-        # configuration of the app.ini, the proper GITEA__group__VALUE keyword can be found:
-        # https://docs.gitea.com/administration/config-cheat-sheet
-        # the group is the value in () for no app.ini configuration
+            # configuration of the app.ini, the proper GITEA__group__VALUE keyword can be found:
+            # https://docs.gitea.com/administration/config-cheat-sheet
+            # the group is the value in () for no app.ini configuration
             - USER_UID=1000
             - USER_GID=1000
             - GITEA_DEFAULT__RUN_USER=git
             - GITEA__database__DB_TYPE=sqlite3
-            - GITEA__server__ROOT_URL=http://localhost:3000/
+            - GITEA__server__ROOT_URL=http://0.0.0.0:3000/
             - GITEA__server__START_SSH_SERVER=false
             - GITEA__server__DISABLE_SSH=true
             - GITEA__security__INSTALL_LOCK=true
             - GITEA__repository__ENABLE_PUSH_CREATE_USE=true
             - GITEA__repository__DEFAULT_PUSH_CREATE_PRIVATE=true
-            
+
         networks:
-            - gitea
+            - gitea-net
         volumes:
             - gitea-data:/data
-            - gitea-config:/etc/gitea
+            - gitea-data:/etc/gitea
         ports:
             - "3000:3000"
-            # - "222:22"
 
     flagd:
         image: ghcr.io/open-feature/flagd:v0.11.5
-        # command: sleep infinity
+        container_name: flagd
+        command: start --port 8013 --uri http://gitea:3000/openfeature/flags/raw/branch/main/example_flags.flagd.json
         volumes:
-            - gitea-repo:/repo
+            - flagd-data:/repo
         networks:
-            - gitea
+            - gitea-net
+        depends_on:
+            - server
 
 volumes:
     gitea-data:
-    gitea-config:
-    gitea-repo:
+    flagd-data:
