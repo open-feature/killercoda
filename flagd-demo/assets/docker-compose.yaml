@@ -8,6 +8,9 @@ services:
         container_name: gitea
         restart: always
         environment:
+        # configuration of the app.ini, the proper GITEA__group__VALUE keyword can be found:
+        # https://docs.gitea.com/administration/config-cheat-sheet
+        # the group is the value in () for no app.ini configuration
             - USER_UID=1000
             - USER_GID=1000
             - GITEA_DEFAULT__RUN_USER=git

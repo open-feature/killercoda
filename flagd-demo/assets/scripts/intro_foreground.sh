@@ -17,16 +17,16 @@ echo "Starting Gitea & flagd docker containers..."
 docker compose -f ~/docker-compose.yaml up -d
 
 # Confirm gitea is functional before making calls
-until docker exec gitea curl -s http://localhost:3000/api/v1/version | tee /tmp/version_output.txt | grep -q "version"; do
+until docker exec gitea curl -s http://localhost:3000/api/v1/version | grep -q "version"; do
   echo "Gitea not ready yet..."
   sleep 2
 done
 
-# Check if openfeature user exists
+# First gitea is the container and the next is the call
 user_list=$(docker exec -u git gitea gitea admin user list 2>/dev/null)
 
+# Check if openfeature user exists
 if ! echo "$user_list" | grep -qw "openfeature"; then
-  # Create a user called 'openfeature' with password 'openfeature'
   # Using the gitea service started with docker
   echo "Creating openfeature admin gitea user..."
   docker exec -u git gitea gitea admin user create \
@@ -35,12 +35,34 @@ if ! echo "$user_list" | grep -qw "openfeature"; then
     --email=me@faas.com \
     --must-change-password=false
     # -c /etc/gitea
+else
+  echo "User already exists. Continuing..."
 fi
 
-# Setup access token for tea CLI set up
-echo "Generating gitea access token for tea CLI..."
+echo "Checking for existing token ..."
+user_tokens=$(docker exec gitea curl -s -H "Authorization: Basic $(echo -n "openfeature:openfeature" | base64)" \
+  http://localhost:3000/api/v1/users/openfeature/tokens)
+
+# Output the token check into JSON array & looping to get id of tea_token
+token_id=$(echo "$user_tokens" | jq -r '.[] | select(.name == "tea_token") | .id') > /dev/null
+
+# When the token ID exists delete to regenerate to adhere to gitea usage
+# non-empty && not null
+if [ -n "$token_id" ] && [ "$token_id" != "null" ]; then
+  echo "Deleting existing token..."
+  docker exec gitea curl -s -X DELETE \
+    http://localhost:3000/api/v1/users/openfeature/tokens/$token_id \
+    -H "Authorization: Basic $(echo -n "openfeature:openfeature" | base64)"
+  echo "Re-generating gitea access token for tea CLI..."
+else
+  echo "No existing tea_token."
+  echo "Generating gitea access token for tea CLI..."
+fi
+
+# Generate access token for tea CLI set up
 docker exec -u git gitea gitea admin user generate-access-token \
   --username=openfeature \
+  --token-name=tea_token \
   --scopes=all \
   --raw > /tmp/output.log 
   # -c /etc/gitea \
