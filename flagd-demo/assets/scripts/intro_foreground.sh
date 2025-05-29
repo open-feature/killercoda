@@ -60,7 +60,7 @@ user_tokens=$(docker exec gitea curl -s -H "Authorization: Basic $(echo -n "$USE
   "$BASE_URL/api/v1/users/$USER_NAME/tokens")
 
 # Output the token check into JSON array & looping to get id of tea_token
-token_id=$(echo "$user_tokens" | jq -r '.[] | select(.name == $TOKEN_NAME) | .id') > /dev/null
+token_id=$(echo "$user_tokens" | jq -er --arg TOKEN_NAME "$TOKEN_NAME" '.[] | select(.name == $TOKEN_NAME) | .id') > /dev/null
 
 # When the token ID exists delete to regenerate to adhere to gitea usage
 # non-empty && not null
@@ -102,7 +102,7 @@ tea login add \
 
 # Check if repo 'flags' exists
 echo "Checking if repo 'flags' exists..."
-repo_exists=$(tea repo list --json | jq -e '.[] | select(.name==$REPO_NAME)' >/dev/null 2>&1 && echo "yes" || echo "no")
+repo_exists=$(tea repo list --json | jq -er --arg REPO_NAME "$REPO_NAME" '.[] | select(.name==$REPO_NAME)' >/dev/null 2>&1 && echo "yes" || echo "no")
 
 if [[ "$repo_exists" == "yes" ]]; then
   echo "Repo 'flags' already exists. Skipping creation."
