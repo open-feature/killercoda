@@ -24,7 +24,13 @@ fi
 echo "Using Gitea URL: $BASE_URL"
 
 echo "Starting Gitea docker container..."
-docker compose -f ~/docker-compose.yaml up -d
+# Killercoda doesn't use the `docker compose` syntax as of now
+if type -P docker-compose &>/dev/null; then
+  docker-compose -f ~/docker-compose.yaml up -d
+else
+  docker compose -f ~/docker-compose.yaml up -d
+fi
+# docker compose -f ~/docker-compose.yaml up -d
 
 # Confirm gitea is functional before making calls
 until curl -s "$BASE_URL:3000/api/v1/version" | grep -q "version"; do
