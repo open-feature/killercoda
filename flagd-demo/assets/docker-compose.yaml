@@ -1,0 +1,34 @@
+networks:
+    gitea-net:
+        driver: bridge
+
+services:
+    server:
+        image: docker.gitea.com/gitea:1.23.8
+        container_name: gitea
+        restart: always
+        environment:
+            # configuration of the app.ini, the proper GITEA__group__VALUE keyword can be found:
+            # https://docs.gitea.com/administration/config-cheat-sheet
+            # the group is the value in () for no app.ini configuration
+            - USER_UID=1000
+            - USER_GID=1000
+            - GITEA_DEFAULT__RUN_USER=git
+            - GITEA__database__DB_TYPE=sqlite3
+            - GITEA__server__ROOT_URL=http://0.0.0.0:3000/
+            - GITEA__server__START_SSH_SERVER=false
+            - GITEA__server__DISABLE_SSH=true
+            - GITEA__security__INSTALL_LOCK=true
+            - GITEA__repository__ENABLE_PUSH_CREATE_USE=true
+            - GITEA__repository__DEFAULT_PUSH_CREATE_PRIVATE=true
+
+        networks:
+            - gitea-net
+        volumes:
+            - gitea-data:/data
+            - gitea-data:/etc/gitea
+        ports:
+            - "3000:3000"
+
+volumes:
+    gitea-data:

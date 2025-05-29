@@ -46,14 +46,8 @@
     "assets": {
       "host01": [
         {
-          "file": "gitea.app.ini",
-          "chmod": "+x",
-          "target": "~"
-        },
-        {
-          "file": "gitea.service",
-          "chmod": "+x",
-          "target": "~"
+          "file": "docker-compose.yaml",
+          "target": "/root/docker-compose.yaml"
         }
       ]
     }
