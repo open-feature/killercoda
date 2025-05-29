@@ -47,7 +47,7 @@
       "host01": [
         { 
           "file": "assets/docker-compose.yaml",
-          "target": "/root/docker-compose.yaml"
+          "target": "/docker-compose.yaml"
         }
       ]
     }
