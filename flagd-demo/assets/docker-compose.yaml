@@ -33,9 +33,8 @@ services:
         healthcheck:
             test: ["CMD", "curl", "-sf", "http://0.0.0.0:3000/api/v1/version"]
             interval: 2s
-            timeout: 120s
-            retries: 10
-            start_period: 2s
+            timeout: 30s
+            retries: 5
 
 volumes:
     gitea-data:

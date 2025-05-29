@@ -26,15 +26,15 @@ until [ "$(docker inspect --format='{{.State.Health.Status}}' gitea)" == "health
   sleep 5
 done
 
-if [[ -n "${TRAFFIC_HOST1_3000:-}" ]]; then
-  BASE_URL="http://${TRAFFIC_HOST1_3000}"
-elif [[ -n "${BASE_URL:-}" ]]; then
-  # Use passed-in BASE_URL environment variable (e.g. host.docker.internal on Mac/Windows)
+if [[ -n "${BASE_URL:-}" ]]; then
+  # Use passed-in BASE_URL environment variable (e.g. host.docker.internal:3000 on Mac/Windows)
   # Makes it easier to run locally with mock killercoda env dockerfile
-  BASE_URL="${BASE_URL}:3000"
+  BASE_URL="${BASE_URL}"
+elif [[ -n "${TRAFFIC_HOST1_3000:-}" ]]; then
+  BASE_URL="http://${TRAFFIC_HOST1_3000}"
 else
   # Fallback default
-  BASE_URL="http://localhost"
+  BASE_URL="http://localhost:3000"
 fi
 
 echo "Using base URL: $BASE_URL"
