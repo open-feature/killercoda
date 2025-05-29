@@ -13,7 +13,7 @@ REPO_NAME="flags"
 # Wait for Killercoda to set TRAFFIC_HOST1_3000
 while [[ -z "${TRAFFIC_HOST1_3000:-}" ]]; do
   echo "Waiting for TRAFFIC_HOST1_3000 to be set by Killercoda..."
-  sleep 1
+  sleep 2
 done
 
 if [[ -n "${TRAFFIC_HOST1_3000:-}" ]]; then

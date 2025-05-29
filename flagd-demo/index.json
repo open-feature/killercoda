@@ -55,18 +55,18 @@
   "environment": {
     "showdashboard": true,
     "dashboard": "Dashboard",
-    "uilayout": "terminal",
-    "ports": [
-      {
-        "port": 3000,
-        "on": "host01"
-      },
-            {
-        "port": 8013,
-        "on": "host01"
-      }
-    ]
+    "uilayout": "terminal"
   },
+  "ports": [
+    {
+      "port": 3000,
+      "on": "host01"
+    },
+          {
+      "port": 8013,
+      "on": "host01"
+    }
+  ],
   "backend": {
     "imageid": "ubuntu"
   }
