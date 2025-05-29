@@ -26,9 +26,17 @@ services:
             - gitea-net
         volumes:
             - gitea-data:/data
-            - gitea-data:/etc/gitea
+            # - gitea-data:/etc/gitea
+            - gitea-config:/etc/gitea
         ports:
             - "3000:3000"
+        healthcheck:
+            test: ["CMD", "curl", "-sf", "http://0.0.0.0:3000/api/v1/version"]
+            interval: 5s
+            timeout: 30s
+            retries: 5
+            start_period: 2s
 
 volumes:
     gitea-data:
+    gitea-config:

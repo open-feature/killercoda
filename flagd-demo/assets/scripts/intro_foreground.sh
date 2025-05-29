@@ -5,14 +5,23 @@ GITEA_VERSION=1.23.8
 TEA_CLI_VERSION=0.9.2
 FLAGD_VERSION=0.11.5
 USER_NAME="openfeature"
-PASSWORD="openfeature"
+USER_PASSWORD="openfeature"
 USER_EMAIL=me@faas.com
 TOKEN_NAME="tea_token"
 REPO_NAME="flags"
 
-# Wait for Killercoda to set TRAFFIC_HOST1_3000
-while [[ -z "${TRAFFIC_HOST1_3000:-}" ]]; do
-  echo "Waiting for TRAFFIC_HOST1_3000 to be set by Killercoda..."
+
+echo "Starting Gitea docker container..."
+# Killercoda doesn't use the `docker compose` syntax as of now
+if type -P docker-compose &>/dev/null; then
+  docker-compose -f ~/docker-compose.yaml up -d
+else
+  docker compose -f ~/docker-compose.yaml up -d
+fi
+
+echo "Waiting for Gitea container to be healthy..."
+until [ "$(docker inspect --format='{{.State.Health.Status}}' gitea)" == "healthy" ]; do
+  echo "Gitea not healthy yet..."
   sleep 2
 done
 
@@ -24,25 +33,10 @@ elif [[ -n "${BASE_URL:-}" ]]; then
   BASE_URL="${BASE_URL}"
 else
   # Fallback default
-  BASE_URL="http://gitea"
+  BASE_URL="http://localhost"
 fi
 
-echo "Using Gitea URL: $BASE_URL"
-
-echo "Starting Gitea docker container..."
-# Killercoda doesn't use the `docker compose` syntax as of now
-if type -P docker-compose &>/dev/null; then
-  docker-compose -f ~/docker-compose.yaml up -d
-else
-  docker compose -f ~/docker-compose.yaml up -d
-fi
-# docker compose -f ~/docker-compose.yaml up -d
-
-# Confirm gitea is functional before making calls
-until curl -s "$BASE_URL:3000/api/v1/version" | grep -q "version"; do
-  echo "Gitea not ready yet..."
-  sleep 2
-done
+echo "Using base URL: $BASE_URL"
 
 # First gitea is the container and the next is the call
 user_list=$(docker exec -u git gitea gitea admin user list 2>/dev/null)
