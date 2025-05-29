@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 DEBUG_VERSION=13
 GITEA_VERSION=1.23.8
 TEA_CLI_VERSION=0.9.2
@@ -10,8 +12,36 @@ USER_EMAIL=me@faas.com
 TOKEN_NAME="tea_token"
 REPO_NAME="flags"
 
-echo "Checking if docker-compose.yaml exists at /root:"
-ls -l ~/docker-compose.yaml || echo "docker-compose.yaml not found!"
+if ! type -P flagd &> /dev/null; then
+  echo "Installing flagd..."
+  wget -O flagd.tar.gz https://github.com/open-feature/flagd/releases/download/flagd%2Fv${FLAGD_VERSION}/flagd_${FLAGD_VERSION}_Linux_x86_64.tar.gz
+  tar -xf flagd.tar.gz
+  mv flagd_linux_x86_64 flagd
+  chmod +x flagd
+  mv flagd /usr/local/bin
+fi 
+
+if ! type -P tea &> /dev/null; then 
+  echo "Installing tea CLI..."
+  # Download and install 'gitea' CLI: 'tea'
+  wget -O tea https://dl.gitea.com/tea/${TEA_CLI_VERSION}/tea-${TEA_CLI_VERSION}-linux-amd64
+  chmod +x tea
+  mv tea /usr/local/bin
+fi
+
+# Add 'git' user
+adduser \
+  --system \
+  --shell /bin/bash \
+  --gecos 'Git Version Control' \
+  --group \
+  --disabled-password \
+  --home /home/git \
+  git
+
+# Configure git for 'ubuntu' and 'git' users
+git config --system user.email $USER_EMAIL
+git config --system user.name $USER_NAME
 
 echo "Starting Gitea docker container..."
 # Killercoda doesn't use the `docker compose` syntax as of now
@@ -32,7 +62,7 @@ if [[ -n "${TRAFFIC_HOST1_3000:-}" ]]; then
 elif [[ -n "${BASE_URL:-}" ]]; then
   # Use passed-in BASE_URL environment variable (e.g. host.docker.internal on Mac/Windows)
   # Makes it easier to run locally with mock killercoda env dockerfile
-  BASE_URL="${BASE_URL}"
+  BASE_URL="${BASE_URL}:3000"
 else
   # Fallback default
   BASE_URL="http://localhost"
@@ -49,7 +79,7 @@ if ! echo "$user_list" | grep -qw "$USER_NAME"; then
   echo "Creating openfeature admin gitea user..."
   docker exec -u git gitea gitea admin user create \
     --username=$USER_NAME \
-    --password=$PASSWORD \
+    --password=$USER_PASSWORD \
     --email=$USER_EMAIL \
     --must-change-password=false
 else
@@ -85,19 +115,11 @@ docker exec -u git gitea gitea admin user generate-access-token \
 
 ACCESS_TOKEN=$(tail -n 1 /tmp/output.log)
 
-if ! type -P tea &> /dev/null; then 
-  echo "Installing tea CLI..."
-  # Download and install 'gitea' CLI: 'tea'
-  wget -O tea https://dl.gitea.com/tea/${TEA_CLI_VERSION}/tea-${TEA_CLI_VERSION}-linux-amd64
-  chmod +x tea
-  mv tea /usr/local/bin
-fi
-
 # Authenticate the 'tea' CLI
 echo "Authenticate tea CLI..."
 tea login add \
   --name=local \
-  --url="$BASE_URL:3000" \
+  --url="$BASE_URL" \
   --token="$ACCESS_TOKEN" # > /dev/null 2>&1
 
 # Check if repo 'flags' exists
@@ -111,40 +133,15 @@ else
   tea repo create --login=local --name=$REPO_NAME --branch=main --init=true >/dev/null
 fi
 
-# Add 'git' user
-adduser \
-  --system \
-  --shell /bin/bash \
-  --gecos 'Git Version Control' \
-  --group \
-  --disabled-password \
-  --home /home/git \
-  git
+git clone http://$USER_NAME:$USER_PASSWORD@${BASE_URL#http://}/$USER_NAME/flags
 
-# Configure git for 'ubuntu' and 'git' users
-git config --system user.email $USER_EMAIL
-git config --system user.name $USER_NAME
-
-git clone http://$USER_NAME:$USER_PASSWORD@${BASE_URL#http://}:3000/$USER_NAME/flags
-
-cd $REPO_NAME
-wget -O example_flags.flagd.json https://raw.githubusercontent.com/open-feature/flagd/main/samples/example_flags.flagd.json
+wget -O ~/example_flags.flagd.json https://raw.githubusercontent.com/open-feature/flagd/main/samples/example_flags.flagd.json
+cd ~/$REPO_NAME
 
 git config credential.helper cache
 git add -A
 git commit -m "seed flags from flagd json"
 git push origin main
-
-if ! type -P flagd &> /dev/null; then
-  echo "Installing flagd..."
-  wget -O flagd.tar.gz https://github.com/open-feature/flagd/releases/download/flagd%2Fv${FLAGD_VERSION}/flagd_${FLAGD_VERSION}_Linux_x86_64.tar.gz
-  tar -xf flagd.tar.gz
-  mv flagd_linux_x86_64 flagd
-  chmod +x flagd
-  mv flagd /usr/local/bin
-fi
-
-echo  🎉 Installation Complete 🎉 Please proceed now...   
 
 # ---------------------------------------------#
 #       🎉 Installation Complete 🎉           #
