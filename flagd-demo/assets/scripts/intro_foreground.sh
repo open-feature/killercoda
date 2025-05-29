@@ -10,13 +10,16 @@ USER_EMAIL=me@faas.com
 TOKEN_NAME="tea_token"
 REPO_NAME="flags"
 
+echo "Checking if docker-compose.yaml exists at /root:"
+ls -l /root/docker-compose.yaml || echo "docker-compose.yaml not found!"
+
 
 echo "Starting Gitea docker container..."
 # Killercoda doesn't use the `docker compose` syntax as of now
 if type -P docker-compose &>/dev/null; then
-  docker-compose -f ~/docker-compose.yaml up -d
+  docker-compose -f /root/docker-compose.yaml up -d
 else
-  docker compose -f ~/docker-compose.yaml up -d
+  docker compose -f /root/docker-compose.yaml up -d
 fi
 
 echo "Waiting for Gitea container to be healthy..."

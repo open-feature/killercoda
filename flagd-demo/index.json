@@ -46,8 +46,8 @@
     "assets": {
       "host01": [
         { 
-          "file": "flagd-demo/assets/docker-compose.yaml",
-          "target": "~/docker-compose.yaml"
+          "file": "assets/docker-compose.yaml",
+          "target": "/root/docker-compose.yaml"
         }
       ]
     }
