@@ -12,6 +12,33 @@ USER_EMAIL=me@faas.com
 TOKEN_NAME="tea_token"
 REPO_NAME="flags"
 
+echo "Starting Gitea docker container..."
+# Killercoda doesn't use the `docker compose` syntax as of now
+if type -P docker-compose &>/dev/null; then
+  docker-compose -f ~/docker-compose.yaml up -d
+else
+  docker compose -f ~/docker-compose.yaml up -d
+fi
+
+echo "Waiting for Gitea container to be healthy..."
+until [ "$(docker inspect --format='{{.State.Health.Status}}' gitea)" == "healthy" ]; do
+  echo "Gitea not healthy yet..."
+  sleep 2
+done
+
+if [[ -n "${TRAFFIC_HOST1_3000:-}" ]]; then
+  BASE_URL="http://${TRAFFIC_HOST1_3000}"
+elif [[ -n "${BASE_URL:-}" ]]; then
+  # Use passed-in BASE_URL environment variable (e.g. host.docker.internal on Mac/Windows)
+  # Makes it easier to run locally with mock killercoda env dockerfile
+  BASE_URL="${BASE_URL}:3000"
+else
+  # Fallback default
+  BASE_URL="http://localhost"
+fi
+
+echo "Using base URL: $BASE_URL"
+
 if ! type -P flagd &> /dev/null; then
   echo "Installing flagd..."
   wget -O flagd.tar.gz https://github.com/open-feature/flagd/releases/download/flagd%2Fv${FLAGD_VERSION}/flagd_${FLAGD_VERSION}_Linux_x86_64.tar.gz
@@ -42,33 +69,6 @@ adduser \
 # Configure git for 'ubuntu' and 'git' users
 git config --system user.email $USER_EMAIL
 git config --system user.name $USER_NAME
-
-echo "Starting Gitea docker container..."
-# Killercoda doesn't use the `docker compose` syntax as of now
-if type -P docker-compose &>/dev/null; then
-  docker-compose -f ~/docker-compose.yaml up -d
-else
-  docker compose -f ~/docker-compose.yaml up -d
-fi
-
-echo "Waiting for Gitea container to be healthy..."
-until [ "$(docker inspect --format='{{.State.Health.Status}}' gitea)" == "healthy" ]; do
-  echo "Gitea not healthy yet..."
-  sleep 2
-done
-
-if [[ -n "${TRAFFIC_HOST1_3000:-}" ]]; then
-  BASE_URL="http://${TRAFFIC_HOST1_3000}"
-elif [[ -n "${BASE_URL:-}" ]]; then
-  # Use passed-in BASE_URL environment variable (e.g. host.docker.internal on Mac/Windows)
-  # Makes it easier to run locally with mock killercoda env dockerfile
-  BASE_URL="${BASE_URL}:3000"
-else
-  # Fallback default
-  BASE_URL="http://localhost"
-fi
-
-echo "Using base URL: $BASE_URL"
 
 # First gitea is the container and the next is the call
 user_list=$(docker exec -u git gitea gitea admin user list 2>/dev/null)
