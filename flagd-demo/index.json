@@ -47,7 +47,7 @@
       "host01": [
         {
           "file": "docker-compose.yaml",
-          "target": "/root/docker-compose.yaml"
+          "target": "~/docker-compose.yaml"
         }
       ]
     }
@@ -59,6 +59,10 @@
     "ports": [
       {
         "port": 3000,
+        "on": "host01"
+      },
+            {
+        "port": 8013,
         "on": "host01"
       }
     ]
