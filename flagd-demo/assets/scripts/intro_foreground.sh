@@ -23,7 +23,7 @@ fi
 echo "Waiting for Gitea container to be healthy..."
 until [ "$(docker inspect --format='{{.State.Health.Status}}' gitea)" == "healthy" ]; do
   echo "Gitea not healthy yet..."
-  sleep 2
+  sleep 5
 done
 
 if [[ -n "${TRAFFIC_HOST1_3000:-}" ]]; then
@@ -38,37 +38,6 @@ else
 fi
 
 echo "Using base URL: $BASE_URL"
-
-if ! type -P flagd &> /dev/null; then
-  echo "Installing flagd..."
-  wget -O flagd.tar.gz https://github.com/open-feature/flagd/releases/download/flagd%2Fv${FLAGD_VERSION}/flagd_${FLAGD_VERSION}_Linux_x86_64.tar.gz
-  tar -xf flagd.tar.gz
-  mv flagd_linux_x86_64 flagd
-  chmod +x flagd
-  mv flagd /usr/local/bin
-fi 
-
-if ! type -P tea &> /dev/null; then 
-  echo "Installing tea CLI..."
-  # Download and install 'gitea' CLI: 'tea'
-  wget -O tea https://dl.gitea.com/tea/${TEA_CLI_VERSION}/tea-${TEA_CLI_VERSION}-linux-amd64
-  chmod +x tea
-  mv tea /usr/local/bin
-fi
-
-# Add 'git' user
-adduser \
-  --system \
-  --shell /bin/bash \
-  --gecos 'Git Version Control' \
-  --group \
-  --disabled-password \
-  --home /home/git \
-  git
-
-# Configure git for 'ubuntu' and 'git' users
-git config --system user.email $USER_EMAIL
-git config --system user.name $USER_NAME
 
 # First gitea is the container and the next is the call
 user_list=$(docker exec -u git gitea gitea admin user list 2>/dev/null)
@@ -115,6 +84,15 @@ docker exec -u git gitea gitea admin user generate-access-token \
 
 ACCESS_TOKEN=$(tail -n 1 /tmp/output.log)
 
+
+if ! type -P tea &> /dev/null; then 
+  echo "Installing tea CLI..."
+  # Download and install 'gitea' CLI: 'tea'
+  wget -O tea https://dl.gitea.com/tea/${TEA_CLI_VERSION}/tea-${TEA_CLI_VERSION}-linux-amd64
+  chmod +x tea
+  mv tea /usr/local/bin
+fi
+
 # Authenticate the 'tea' CLI
 echo "Authenticate tea CLI..."
 tea login add \
@@ -132,6 +110,29 @@ else
   echo "Creating repo 'flags'..."
   tea repo create --login=local --name=$REPO_NAME --branch=main --init=true >/dev/null
 fi
+
+if ! type -P flagd &> /dev/null; then
+  echo "Installing flagd..."
+  wget -O flagd.tar.gz https://github.com/open-feature/flagd/releases/download/flagd%2Fv${FLAGD_VERSION}/flagd_${FLAGD_VERSION}_Linux_x86_64.tar.gz
+  tar -xf flagd.tar.gz
+  mv flagd_linux_x86_64 flagd
+  chmod +x flagd
+  mv flagd /usr/local/bin
+fi 
+
+# Add 'git' user
+adduser \
+  --system \
+  --shell /bin/bash \
+  --gecos 'Git Version Control' \
+  --group \
+  --disabled-password \
+  --home /home/git \
+  git
+
+# Configure git for 'ubuntu' and 'git' users
+git config --system user.email $USER_EMAIL
+git config --system user.name $USER_NAME
 
 git clone http://$USER_NAME:$USER_PASSWORD@${BASE_URL#http://}/$USER_NAME/flags
 
