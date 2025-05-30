@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+# set -euo pipefail
 
 DEBUG_VERSION=13
 GITEA_VERSION=1.23.8
