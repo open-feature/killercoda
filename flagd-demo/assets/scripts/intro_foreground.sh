@@ -25,7 +25,7 @@ if [[ -n "${BASE_URL:-}" ]]; then
   # Makes it easier to run locally with mock killercoda env dockerfile
   BASE_URL="${BASE_URL}"
 else
-  BASE_URL="http://${TRAFFIC_HOST1_3000}"
+  BASE_URL="http://${TRAFFIC_HOST1_3000:-0.0.0.0:3000}"
   # Fallback default
   # BASE_URL="http://localhost:3000"
   # BASE_URL="http://${TRAFFIC_HOST1_3000}"
