@@ -60,7 +60,7 @@ user_tokens=$(docker exec gitea curl -s -H "Authorization: Basic $(echo -n "$USE
   "$BASE_URL/api/v1/users/$USER_NAME/tokens")
 
 # Output the token check into JSON array & looping to get id of tea_token
-token_id=$(echo "$user_tokens" | jq -er --arg TOKEN_NAME "$TOKEN_NAME" '.[] | select(.name == $TOKEN_NAME) | .id') > /dev/null
+token_id=$(echo "$user_tokens" | jq -r --arg TOKEN_NAME "$TOKEN_NAME" '.[] | select(.name == $TOKEN_NAME) | .id') 
 
 # When the token ID exists delete to regenerate to adhere to gitea usage
 # non-empty && not null
@@ -91,6 +91,9 @@ if ! type -P tea &> /dev/null; then
   wget -O tea https://dl.gitea.com/tea/${TEA_CLI_VERSION}/tea-${TEA_CLI_VERSION}-linux-amd64
   chmod +x tea
   mv tea /usr/local/bin
+else 
+  # Remove existing 'local' login if it exists
+  tea login rm local 2>/dev/null || true
 fi
 
 # Authenticate the 'tea' CLI
@@ -102,9 +105,10 @@ tea login add \
 
 # Check if repo 'flags' exists
 echo "Checking if repo 'flags' exists..."
-repo_exists=$(tea repo list --json | jq -er --arg REPO_NAME "$REPO_NAME" '.[] | select(.name==$REPO_NAME)' >/dev/null 2>&1 && echo "yes" || echo "no")
+# count the lines of the json response know how many repos
+repo_exists=$(tea repo list --login local --output simple | grep -w "$REPO_NAME" | wc -l)
 
-if [[ "$repo_exists" == "yes" ]]; then
+if [[ "$repo_exists" -gt 0 ]]; then
   echo "Repo 'flags' already exists. Skipping creation."
 else
   echo "Creating repo 'flags'..."
