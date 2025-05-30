@@ -138,7 +138,7 @@ adduser \
 git config --system user.email $USER_EMAIL
 git config --system user.name $USER_NAME
 
-git clone http://$USER_NAME:$USER_PASSWORD@${BASE_URL#http://}/$USER_NAME/$REPO_NAME
+git clone http://$USER_NAME:$USER_PASSWORD@${BASE_URL#http://}/$USER_NAME/$REPO_NAME /$REPO_NAME
 
 wget -P /$REPO_NAME https://raw.githubusercontent.com/open-feature/flagd/main/samples/example_flags.flagd.json
 cd /$REPO_NAME
