@@ -20,22 +20,22 @@ else
   docker compose -f ~/docker-compose.yaml up -d
 fi
 
-echo "Waiting for Gitea container to be healthy..."
-until [ "$(docker inspect --format='{{.State.Health.Status}}' gitea)" == "healthy" ]; do
-  echo "Gitea not healthy yet..."
-  sleep 5
-done
-
 if [[ -n "${BASE_URL:-}" ]]; then
   # Use passed-in BASE_URL environment variable (e.g. host.docker.internal:3000 on Mac/Windows)
   # Makes it easier to run locally with mock killercoda env dockerfile
   BASE_URL="${BASE_URL}"
-elif [[ -n "${TRAFFIC_HOST1_3000:-}" ]]; then
-  BASE_URL="http://${TRAFFIC_HOST1_3000}"
 else
+  BASE_URL="http://${TRAFFIC_HOST1_3000}"
   # Fallback default
-  BASE_URL="http://localhost:3000"
+  # BASE_URL="http://localhost:3000"
+  # BASE_URL="http://${TRAFFIC_HOST1_3000}"
 fi
+
+echo "Waiting for Gitea API to be ready..."
+until curl -sf "$BASE_URL/api/v1/version" > /dev/null; do
+  echo "Gitea API not ready yet..."
+  sleep 5
+done
 
 echo "Using base URL: $BASE_URL"
 
@@ -138,10 +138,10 @@ adduser \
 git config --system user.email $USER_EMAIL
 git config --system user.name $USER_NAME
 
-git clone http://$USER_NAME:$USER_PASSWORD@${BASE_URL#http://}/$USER_NAME/flags
+git clone http://$USER_NAME:$USER_PASSWORD@${BASE_URL#http://}/$USER_NAME/$REPO_NAME
 
-wget -O ~/example_flags.flagd.json https://raw.githubusercontent.com/open-feature/flagd/main/samples/example_flags.flagd.json
-cd ~/$REPO_NAME
+wget -P /$REPO_NAME https://raw.githubusercontent.com/open-feature/flagd/main/samples/example_flags.flagd.json
+cd /$REPO_NAME
 
 git config credential.helper cache
 git add -A
