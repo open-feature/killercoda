@@ -1,0 +1,26 @@
+FROM ubuntu:noble
+
+RUN apt-get update \
+&& DEBIAN_FRONTEND=noninteractive \
+    apt-get install -y wget git vim sudo ca-certificates curl gnupg lsb-release coreutils jq \
+&& rm -rf /var/lib/apt/lists/*
+
+# Install docker in docker to mock killercoda's ability to use docker
+RUN mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+    gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+    https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | \
+    tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+    apt-get update && \
+    apt-get install -y docker-ce-cli docker-compose-plugin
+
+# Add the necessary files needed to run
+COPY assets/scripts/intro_foreground.sh /usr/local/bin/intro_foreground.sh
+COPY assets/docker-compose.yaml /root/docker-compose.yaml
+
+# Add executable permission
+RUN chmod +x /usr/local/bin/intro_foreground.sh
+
+# Run the script file
+# CMD ["/usr/local/bin/intro_foreground.sh"]

@@ -45,15 +45,9 @@
     },
     "assets": {
       "host01": [
-        {
-          "file": "gitea.app.ini",
-          "chmod": "+x",
-          "target": "~"
-        },
-        {
-          "file": "gitea.service",
-          "chmod": "+x",
-          "target": "~"
+        { 
+          "file": "docker-compose.yaml",
+          "target": "~/"
         }
       ]
     }
@@ -63,6 +57,16 @@
     "dashboard": "Dashboard",
     "uilayout": "terminal"
   },
+  "ports": [
+    {
+      "port": 3000,
+      "on": "host01"
+    },
+          {
+      "port": 8013,
+      "on": "host01"
+    }
+  ],
   "backend": {
     "imageid": "ubuntu"
   }
