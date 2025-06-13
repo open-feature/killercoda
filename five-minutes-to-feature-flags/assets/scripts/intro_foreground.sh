@@ -25,9 +25,8 @@ source ~/.bashrc
 # -----------------------------------
 # curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - &&\
 # apt install -y nodejs < /dev/null
-curl -fsSL https://deb.nodesource.com/setup_23.x -o nodesource_setup.sh
-bash nodesource_setup.sh
-apt-get install -y nodejs
+curl -fsSL https://deb.nodesource.com/setup_23.x | sudo -E bash - &&\
+apt-get install -y nodejs < /dev/null
 node -v
 
 
