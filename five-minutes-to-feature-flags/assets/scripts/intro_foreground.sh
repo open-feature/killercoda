@@ -21,8 +21,9 @@ source ~/.bashrc
 # -----------------------------------
 # Installing Node
 # -----------------------------------
-curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - &&\
-apt install -y nodejs < /dev/null
+curl -fsSL https://deb.nodesource.com/setup_23.x | sudo -E bash - &&\
+apt-get install -y nodejs < /dev/null
+node -v
 
 
 # -----------------------------------
@@ -37,6 +38,7 @@ cd app
 #  npm install
 # -----------------------------------
 npm ci
+npm install -g npm@latest
 
 # ---------------------------------------------#
 #       🎉 Installation Complete 🎉           #
